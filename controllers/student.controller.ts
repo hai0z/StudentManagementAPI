@@ -2,6 +2,7 @@ import Student from "../entity/Student";
 import { Request, Response } from "express";
 import Mark from "../entity/Mark";
 import Subject from "../entity/Subject";
+
 const studentController = {
     getAllStudent: async (_: Request, res: Response) => {
         try {
@@ -60,7 +61,7 @@ const studentController = {
                 return acc + mark.trungBinhMon;
             }, 0);
 
-            const diemTongKet = tongDiem / studentMark.length;
+            const diemTongKet = tongDiem / studentMark.length ?? 0.0;
 
             return res.json({ ...other, diemTongKet });
         } catch (error) {
@@ -72,7 +73,7 @@ const studentController = {
         const { maHs, hoTen, ngaySinh, gioiTinh, lop_maLop, queQuan, diaChi } =
             req.body;
         try {
-            const student = await Student.create({
+            const student = Student.create({
                 maHs,
                 hoTen,
                 ngaySinh,

@@ -7,6 +7,7 @@ import {
     ManyToMany,
     OneToMany,
     BaseEntity,
+    JoinTable,
 } from "typeorm";
 import Mark from "./Mark";
 import Semester from "./Semester";
@@ -25,12 +26,13 @@ export default class Subject extends BaseEntity {
     @JoinColumn({ name: "hocKi_maHocKi" })
     hocKi_maHocKi: Semester;
 
-    @ManyToMany(() => Student)
+    @ManyToMany(() => Student, (student) => student.subjects)
     student: Student[];
 
     @OneToMany(() => Mark, (mark) => mark.monHoc_maMonHoc)
-    mark: Mark;
+    mark: Mark[];
 
-    @ManyToMany(() => Teacher)
-    teacher: Teacher[];
+    @ManyToMany(() => Teacher, (teacher) => teacher.subjects)
+    @JoinTable({ name: "monhoc_has_giaovien" })
+    teachers: Teacher[];
 }

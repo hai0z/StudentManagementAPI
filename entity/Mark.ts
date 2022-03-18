@@ -2,8 +2,6 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
-    OneToOne,
-    OneToMany,
     JoinColumn,
     ManyToMany,
     BaseEntity,
@@ -29,7 +27,7 @@ export default class Mark extends BaseEntity {
     @Column({ type: "float" })
     trungBinhMon: number;
 
-    @ManyToMany(() => Student)
+    @ManyToMany(() => Student, (student) => student.marks)
     student: Student[];
 
     @ManyToOne(() => Subject, (suject) => suject.mark)

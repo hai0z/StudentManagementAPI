@@ -33,14 +33,13 @@ export default class Teacher extends BaseEntity {
     @Column()
     email: string;
 
-    @ManyToMany(() => Class)
+    @ManyToMany(() => Class, (class_) => class_.teacher)
     @JoinTable({ name: "giaovien_has_lop" })
     maLop: Class[];
 
-    @ManyToMany(() => Student)
+    @ManyToMany(() => Student, (student) => student.teachers)
     students: Student[];
 
-    @ManyToMany(() => Subject, (subject) => subject.teacher)
-    @JoinTable({ name: "giaovien_has_monhoc" })
+    @ManyToMany(() => Subject, (subject) => subject.teachers)
     subjects: Subject[];
 }

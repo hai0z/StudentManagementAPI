@@ -2,7 +2,6 @@ import Teacher from "../entity/Teacher";
 import { Request, Response } from "express";
 import Class from "../entity/Class";
 import Subject from "../entity/Subject";
-import Student from "../entity/Student";
 
 const teacherController = {
     getAllTeacher: async (_: Request, res: Response): Promise<Response> => {
@@ -34,12 +33,11 @@ const teacherController = {
             });
 
             const value = filterByTeacherId.map((students) => {
-                const getStudentInClass = students.student.map((name) => {
-                    return name.hoTen;
-                });
+                const getStudentInClass = students.student[0].maHs;
                 const getClassName = classHasStudent.filter((class_) => {
-                    return getStudentInClass.includes(class_.students[0].hoTen);
+                    return getStudentInClass.includes(class_.students[0].maHs);
                 });
+
                 const { student, teachers, ...other } = students;
                 const { maGiaoVien, tenGiaoVien } = teachers[0];
                 return {

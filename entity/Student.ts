@@ -35,6 +35,9 @@ export default class Student extends BaseEntity {
     @Column()
     diaChi: string;
 
+    @Column({ type: "varchar" })
+    img: string;
+
     @ManyToOne(() => Class, (class_) => class_.students)
     @JoinColumn({ name: "lop_maLop" })
     lop_maLop: Class;

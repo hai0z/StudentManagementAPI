@@ -13,11 +13,11 @@ export default class Semester {
     @PrimaryColumn({ type: "varchar", length: 10 })
     maHocKi: string;
 
-    @Column()
+    @Column({ type: "int" })
     hocKi: number;
 
-    @Column()
-    namHoc: number;
+    @Column({ type: "varchar", length: 15 })
+    namHoc: string;
 
     @OneToMany(() => Subject, (subject) => subject.hocKi_maHocKi)
     maMonHoc: Subject[];

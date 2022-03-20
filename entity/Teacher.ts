@@ -15,22 +15,22 @@ export default class Teacher extends BaseEntity {
     @PrimaryColumn({ type: "varchar", length: 10 })
     maGiaoVien: string;
 
-    @Column()
+    @Column({ type: "varchar", length: 50 })
     tenGiaoVien: string;
 
-    @Column()
+    @Column({ type: "boolean", default: false })
     gioiTinh: string;
 
-    @Column()
+    @Column({ type: "datetime" })
     ngaySinh: string;
 
-    @Column()
+    @Column({ type: "varchar", length: 150 })
     diaChi: string;
 
-    @Column()
+    @Column({ type: "varchar", length: 11 })
     soDienThoai: string;
 
-    @Column()
+    @Column({ type: "varchar", length: 50 })
     email: string;
 
     @ManyToMany(() => Class, (class_) => class_.teacher)

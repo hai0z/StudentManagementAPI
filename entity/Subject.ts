@@ -16,10 +16,10 @@ import Teacher from "./Teacher";
 
 @Entity({ name: "monhoc" })
 export default class Subject extends BaseEntity {
-    @PrimaryColumn({ length: 6 })
+    @PrimaryColumn({ length: 20 })
     maMonHoc: string;
 
-    @Column()
+    @Column({ type: "varchar", length: 50 })
     tenMonHoc: string;
 
     @ManyToOne(() => Semester, (semester) => semester.maMonHoc)

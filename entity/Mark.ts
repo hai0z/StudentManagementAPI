@@ -13,7 +13,7 @@ import Subject from "./Subject";
 @Entity({ name: "diem" })
 export default class Mark extends BaseEntity {
     @PrimaryGeneratedColumn()
-    maDiem: string;
+    maDiem: number;
 
     @Column({ type: "float" })
     diemHeSo1: number;

@@ -15,16 +15,16 @@ export default class Mark extends BaseEntity {
     @PrimaryGeneratedColumn()
     maDiem: number;
 
-    @Column({ type: "float" })
+    @Column({ type: "float", nullable: true })
     diemHeSo1: number;
 
-    @Column({ type: "float" })
+    @Column({ type: "float", nullable: true })
     diemHeSo2: number;
 
-    @Column({ type: "float" })
+    @Column({ type: "float", nullable: true })
     diemHeSo3: number;
 
-    @Column({ type: "float" })
+    @Column({ type: "float", nullable: true })
     trungBinhMon: number;
 
     @ManyToMany(() => Student, (student) => student.marks)

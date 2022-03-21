@@ -33,9 +33,11 @@ const teacherController = {
             });
 
             const value = filterByTeacherId.map((students) => {
-                const getStudentInClass = students.student[0].maHs;
+                const getStudentInClass = students.student.map((student) => {
+                    return student.maHs;
+                });
                 const getClassName = classHasStudent.filter((class_) => {
-                    return getStudentInClass.includes(class_.students[0].maHs);
+                    return getStudentInClass.includes(class_.students[0]?.maHs);
                 });
 
                 const { student, teachers, ...other } = students;
@@ -46,9 +48,7 @@ const teacherController = {
                     class: getClassName,
                 };
             });
-            return res.json({
-                data: value,
-            });
+            return res.json(value);
         } catch (error: any) {
             return res.json({ message: error.message });
         }

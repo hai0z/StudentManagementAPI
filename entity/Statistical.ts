@@ -1,6 +1,7 @@
-import { Entity, PrimaryColumn, Column, OneToMany } from "typeorm";
+import { Entity, PrimaryColumn, Column, OneToMany, ManyToMany } from "typeorm";
 import Student from "./Student";
 import Semester from "./Semester";
+import Mark from "./Mark";
 
 @Entity({ name: "thongke" })
 export default class Statistical {

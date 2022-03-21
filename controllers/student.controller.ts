@@ -68,7 +68,9 @@ const studentController = {
             return res.json({ message: error });
         }
     },
-
+    updateStudentMark: async (req: Request, res: Response) => {
+        const {} = req.body;
+    },
     createStudent: async (req: Request, res: Response) => {
         const { maHs, hoTen, ngaySinh, gioiTinh, lop_maLop, queQuan, diaChi } =
             req.body;

@@ -2,7 +2,6 @@
     "name": "doan1",
     "version": "1.0.0",
     "license": "MIT",
-    "proxy": "26.154.2.2:8080",
     "scripts": {
         "start": "nodemon index.ts --exec ts-node"
     },

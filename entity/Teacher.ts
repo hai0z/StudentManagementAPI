@@ -21,8 +21,8 @@ export default class Teacher extends BaseEntity {
     @Column({ type: "boolean", default: false })
     gioiTinh: string;
 
-    @Column({ type: "datetime" })
-    ngaySinh: string;
+    @Column({ type: "date" })
+    ngaySinh: Date;
 
     @Column({ type: "varchar", length: 150 })
     diaChi: string;

@@ -6,7 +6,9 @@ import {
     ManyToMany,
     BaseEntity,
     ManyToOne,
+    OneToOne,
 } from "typeorm";
+import Semester from "./Semester";
 import Student from "./Student";
 import Subject from "./Subject";
 
@@ -33,4 +35,8 @@ export default class Mark extends BaseEntity {
     @ManyToOne(() => Subject, (suject) => suject.mark)
     @JoinColumn({ name: "monHoc_maMonHoc" })
     monHoc_maMonHoc: Subject;
+
+    @ManyToOne(() => Semester, (semester) => semester.mark)
+    @JoinColumn({ name: "hocKi_maHocKi" })
+    hocKi_maHocKi: Semester;
 }

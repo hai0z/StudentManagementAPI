@@ -23,11 +23,14 @@ const studentController = {
         }
     },
     getStudentMark: async (req: Request, res: Response) => {
-        const { id } = req.params;
+        const { id, maHocKi } = req.params;
         try {
             const student = await Student.findOne(id, { relations: ["marks"] });
             const allMarks = await Mark.find({
-                relations: ["monHoc_maMonHoc"],
+                relations: ["monHoc_maMonHoc", "hocKi_maHocKi"],
+                where: {
+                    hocKi_maHocKi: maHocKi,
+                },
             });
 
             const { marks, ...other } = student as Student;

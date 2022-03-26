@@ -2,6 +2,15 @@
     "name": "doan1",
     "version": "1.0.0",
     "license": "MIT",
+    "proxy": {
+        "proxy": "http://26.154.2.2:8080",
+        "proxy_auth": "",
+        "proxy_headers": {
+            "Accept": "*/*",
+            "Connection": "keep-alive",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
+        }
+    },
     "scripts": {
         "start": "nodemon index.ts --exec ts-node"
     },

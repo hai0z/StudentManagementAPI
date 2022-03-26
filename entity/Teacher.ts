@@ -5,6 +5,7 @@ import {
     Column,
     ManyToMany,
     JoinTable,
+    OneToOne,
 } from "typeorm";
 
 import Class from "./Class";
@@ -32,6 +33,9 @@ export default class Teacher extends BaseEntity {
 
     @Column({ type: "varchar", length: 50 })
     email: string;
+
+    @OneToOne(() => Class, (class_) => class_.teacher)
+    class: Class;
 
     @ManyToMany(() => Class, (class_) => class_.teacher)
     @JoinTable({ name: "giaovien_has_lop" })

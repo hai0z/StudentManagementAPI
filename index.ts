@@ -8,6 +8,7 @@ import "reflect-metadata";
 import studentRoutes from "./routes/student.routes";
 import classRoutes from "./routes/class.routes";
 import teacherRoutes from "./routes/teacher.routes";
+import semesterRoutes from "./routes/semester.routes";
 //
 dotenv.config();
 
@@ -34,3 +35,4 @@ app.get("/", (_: Request, res: Response) => {
 app.use("/api/student", studentRoutes);
 app.use("/api/class", classRoutes);
 app.use("/api/teacher", teacherRoutes);
+app.use("/api/semester", semesterRoutes);

@@ -5,12 +5,15 @@ import {
     OneToMany,
     JoinColumn,
     ManyToOne,
+    OneToOne,
+    BaseEntity,
 } from "typeorm";
 import Subject from "./Subject";
 import Statistical from "./Statistical";
+import Mark from "./Mark";
 @Entity({ name: "hocki" })
-export default class Semester {
-    @PrimaryColumn({ type: "varchar", length: 10 })
+export default class Semester extends BaseEntity {
+    @PrimaryColumn({ type: "varchar", length: 20 })
     maHocKi: string;
 
     @Column({ type: "int" })
@@ -29,4 +32,7 @@ export default class Semester {
     )
     @JoinColumn({ name: "thongke_maThongke" })
     thongKe_maThongke: Statistical;
+
+    @OneToMany(() => Mark, (mark) => mark.hocKi_maHocKi)
+    mark: Mark[];
 }

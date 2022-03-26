@@ -13,7 +13,9 @@ const classController = {
     getStudentByClass: async (req: Request, res: Response) => {
         const { id } = req.params;
         try {
-            const class_ = await Class.findOne(id, { relations: ["students"] });
+            const class_ = await Class.findOne(id, {
+                relations: ["students", "gvcn", "grade"],
+            });
             return res.json(class_);
         } catch (error) {
             return res.json({ message: error });

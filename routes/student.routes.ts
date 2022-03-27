@@ -6,7 +6,7 @@ const route: Router = Router();
 route.get("/", studentController.getAllStudent);
 route.get("/:id", studentController.getStudentById);
 route.get("/:id/marks/:maHocKi", studentController.getStudentMark);
-route.get("/:id/marks/tong-ket", studentController.getDiemTongKet);
+route.get("/:id/marks/:maHocKi/tong-ket", studentController.getDiemTongKet);
 
 //post
 route.post("/create", studentController.createStudent);

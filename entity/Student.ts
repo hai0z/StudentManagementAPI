@@ -7,11 +7,13 @@ import {
     JoinColumn,
     ManyToMany,
     JoinTable,
+    OneToOne,
 } from "typeorm";
 
 import Class from "./Class";
 import Mark from "./Mark";
 import Statistical from "./Statistical";
+import StudentAccount from "./StudentAccount";
 import Subject from "./Subject";
 import Teacher from "./Teacher";
 
@@ -57,4 +59,8 @@ export default class Student extends BaseEntity {
     @ManyToMany(() => Teacher, (teacher) => teacher.students)
     @JoinTable({ name: "hocsinh_has_giaovien" })
     teachers: Teacher[];
+
+    @OneToOne(() => StudentAccount, (studentAccount) => studentAccount.account)
+    @JoinColumn({ name: "studentAccount_id" })
+    studentAccount: StudentAccount;
 }

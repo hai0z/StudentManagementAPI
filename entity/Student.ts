@@ -48,7 +48,7 @@ export default class Student extends BaseEntity {
     @JoinColumn({ name: "thongKe_maThongKe" })
     thongKe_maThongKe: Statistical;
 
-    @ManyToMany(() => Mark, (mark) => mark.student)
+    @ManyToMany(() => Mark, (mark) => mark.student, { cascade: true })
     @JoinTable({ name: "hocsinh_has_diem" })
     marks: Mark[];
 
@@ -63,4 +63,11 @@ export default class Student extends BaseEntity {
     @OneToOne(() => StudentAccount, (studentAccount) => studentAccount.account)
     @JoinColumn({ name: "studentAccount_id" })
     studentAccount: StudentAccount;
+
+    AddMark(mark: Mark) {
+        if (this.marks == null) {
+            this.marks = new Array<Mark>();
+        }
+        this.marks.push(mark);
+    }
 }

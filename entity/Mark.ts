@@ -6,7 +6,9 @@ import {
     ManyToMany,
     BaseEntity,
     ManyToOne,
-    OneToOne,
+    AfterLoad,
+    AfterInsert,
+    BeforeInsert,
 } from "typeorm";
 import Semester from "./Semester";
 import Student from "./Student";
@@ -19,9 +21,19 @@ export default class Mark extends BaseEntity {
 
     @Column({ type: "float", nullable: true })
     diemHeSo1: number;
+    @Column({ type: "float", nullable: true })
+    diemHeSo1_2: number;
+    @Column({ type: "float", nullable: true })
+    diemHeSo1_3: number;
+    @Column({ type: "float", nullable: true })
+    diemHeSo1_4: number;
 
     @Column({ type: "float", nullable: true })
     diemHeSo2: number;
+    @Column({ type: "float", nullable: true })
+    diemHeSo2_2: number;
+    @Column({ type: "float", nullable: true })
+    diemHeSo2_3: number;
 
     @Column({ type: "float", nullable: true })
     diemHeSo3: number;
@@ -29,7 +41,10 @@ export default class Mark extends BaseEntity {
     @Column({ type: "float", nullable: true })
     trungBinhMon: number;
 
-    @ManyToMany(() => Student, (student) => student.marks)
+    @ManyToMany(() => Student, (student) => student.marks, {
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+    })
     student: Student[];
 
     @ManyToOne(() => Subject, (suject) => suject.mark)
@@ -39,4 +54,56 @@ export default class Mark extends BaseEntity {
     @ManyToOne(() => Semester, (semester) => semester.mark)
     @JoinColumn({ name: "hocKi_maHocKi" })
     hocKi_maHocKi: Semester;
+
+    @BeforeInsert()
+    TinhTrungBinhMon() {
+        console.log("before insert mark");
+        let totalElements = 0;
+        let markArr = [];
+        if (this.diemHeSo1 != null) {
+            markArr.push(this.diemHeSo1);
+            totalElements++;
+        }
+        if (this.diemHeSo1_2 != null) {
+            markArr.push(this.diemHeSo1_2);
+            totalElements++;
+        }
+        if (this.diemHeSo1_3 != null) {
+            markArr.push(this.diemHeSo1_3);
+            totalElements++;
+        }
+        if (this.diemHeSo1_4 != null) {
+            markArr.push(this.diemHeSo1_4);
+            totalElements++;
+        }
+
+        if (this.diemHeSo2 != null) {
+            markArr.push(this.diemHeSo2 * 2.0);
+            totalElements += 2;
+        }
+        if (this.diemHeSo2_2 != null) {
+            markArr.push(this.diemHeSo2_2 * 2.0);
+            totalElements += 2;
+        }
+        if (this.diemHeSo2_3 != null) {
+            markArr.push(this.diemHeSo2_3 * 2.0);
+            totalElements += 2;
+        }
+        const diemHeSo3 = this.diemHeSo3;
+        if (diemHeSo3 != null) {
+            markArr.push(diemHeSo3 * 3.0);
+            totalElements += 3;
+            let sum = 0;
+            for (let i = 0; i < markArr.length; i++) {
+                sum += markArr[i];
+            }
+            let average = (sum / totalElements).toFixed(1);
+            this.trungBinhMon = Number(average);
+        }
+    }
+    addSemester(semester: Semester) {
+        if (this.hocKi_maHocKi) {
+            this.hocKi_maHocKi = semester;
+        }
+    }
 }

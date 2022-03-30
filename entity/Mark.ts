@@ -6,9 +6,9 @@ import {
     ManyToMany,
     BaseEntity,
     ManyToOne,
-    AfterLoad,
-    AfterInsert,
     BeforeInsert,
+    BeforeUpdate,
+    AfterUpdate,
 } from "typeorm";
 import Semester from "./Semester";
 import Student from "./Student";
@@ -55,55 +55,50 @@ export default class Mark extends BaseEntity {
     @JoinColumn({ name: "hocKi_maHocKi" })
     hocKi_maHocKi: Semester;
 
-    @BeforeInsert()
+    @BeforeUpdate()
     TinhTrungBinhMon() {
-        console.log("before insert mark");
+        console.log("before update mark");
         let totalElements = 0;
         let markArr = [];
         if (this.diemHeSo1 != null) {
-            markArr.push(this.diemHeSo1);
+            markArr.push(+this.diemHeSo1);
             totalElements++;
         }
         if (this.diemHeSo1_2 != null) {
-            markArr.push(this.diemHeSo1_2);
+            markArr.push(+this.diemHeSo1_2);
             totalElements++;
         }
         if (this.diemHeSo1_3 != null) {
-            markArr.push(this.diemHeSo1_3);
+            markArr.push(+this.diemHeSo1_3);
             totalElements++;
         }
         if (this.diemHeSo1_4 != null) {
-            markArr.push(this.diemHeSo1_4);
+            markArr.push(+this.diemHeSo1_4);
             totalElements++;
         }
 
         if (this.diemHeSo2 != null) {
-            markArr.push(this.diemHeSo2 * 2.0);
+            markArr.push(+this.diemHeSo2 * 2.0);
             totalElements += 2;
         }
         if (this.diemHeSo2_2 != null) {
-            markArr.push(this.diemHeSo2_2 * 2.0);
+            markArr.push(+this.diemHeSo2_2 * 2.0);
             totalElements += 2;
         }
         if (this.diemHeSo2_3 != null) {
-            markArr.push(this.diemHeSo2_3 * 2.0);
+            markArr.push(+this.diemHeSo2_3 * 2.0);
             totalElements += 2;
         }
         const diemHeSo3 = this.diemHeSo3;
         if (diemHeSo3 != null) {
-            markArr.push(diemHeSo3 * 3.0);
+            markArr.push(+this.diemHeSo3 * 3.0);
             totalElements += 3;
             let sum = 0;
             for (let i = 0; i < markArr.length; i++) {
                 sum += markArr[i];
             }
-            let average = (sum / totalElements).toFixed(1);
-            this.trungBinhMon = Number(average);
-        }
-    }
-    addSemester(semester: Semester) {
-        if (this.hocKi_maHocKi) {
-            this.hocKi_maHocKi = semester;
+            let average = +(sum / totalElements).toFixed(1);
+            this.trungBinhMon = average;
         }
     }
 }

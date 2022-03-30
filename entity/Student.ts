@@ -63,11 +63,4 @@ export default class Student extends BaseEntity {
     @OneToOne(() => StudentAccount, (studentAccount) => studentAccount.account)
     @JoinColumn({ name: "studentAccount_id" })
     studentAccount: StudentAccount;
-
-    AddMark(mark: Mark) {
-        if (this.marks == null) {
-            this.marks = new Array<Mark>();
-        }
-        this.marks.push(mark);
-    }
 }

@@ -10,8 +10,8 @@ route.get("/:id/marks/:maHocKi/tong-ket", studentController.getDiemTongKet);
 
 //post
 route.post("/create", studentController.createStudent);
-
+route.post("/:id/createMark", studentController.createMark);
 //put
-route.put("/update/:id", studentController.updateStudent);
-
+route.put("/update/", studentController.updateStudent);
+route.put("/updateMark/", studentController.updateMark);
 export default route;

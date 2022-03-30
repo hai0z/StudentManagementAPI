@@ -49,7 +49,7 @@ app.get("/", async (_: Request, res: Response) => {
         mark.monHoc_maMonHoc = subject;
     }
     await mark.save();
-    const student = await Student.findOne("hs001", { relations: ["marks"] });
+    const student = await Student.findOne("hs004", { relations: ["marks"] });
     student?.marks.push(mark);
     await student?.save();
     return res.json(student?.marks);

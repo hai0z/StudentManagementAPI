@@ -9,6 +9,7 @@ import {
     BeforeInsert,
     BeforeUpdate,
     AfterUpdate,
+    OneToMany,
 } from "typeorm";
 import Semester from "./Semester";
 import Student from "./Student";
@@ -41,11 +42,12 @@ export default class Mark extends BaseEntity {
     @Column({ type: "float", nullable: true })
     trungBinhMon: number;
 
-    @ManyToMany(() => Student, (student) => student.marks, {
+    @ManyToOne(() => Student, (student) => student.marks, {
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
     })
-    student: Student[];
+    @JoinColumn({ name: "maHs" })
+    student: Student;
 
     @ManyToOne(() => Subject, (suject) => suject.mark)
     @JoinColumn({ name: "monHoc_maMonHoc" })

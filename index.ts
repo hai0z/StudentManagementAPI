@@ -34,25 +34,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.get("/", async (_: Request, res: Response) => {
-    const mark = new Mark();
-    const semester = await Semester.findOne("2(2022-2023)");
-    const subject = await Subject.findOne("Toan10");
-    mark.diemHeSo1 = 7;
-    mark.diemHeSo1_2 = 9;
-    mark.diemHeSo2 = 7;
-
-    if (semester) {
-        mark.hocKi_maHocKi = semester;
-    }
-    if (subject) {
-        mark.monHoc_maMonHoc = subject;
-    }
-    await mark.save();
-    const student = await Student.findOne("hs004", { relations: ["marks"] });
-    student?.marks.push(mark);
-    await student?.save();
-    return res.json(student?.marks);
+app.get("/", async (req: Request, res: Response) => {
+    const mark = await Mark.find({
+        where: {
+            hocKi_maHocKi: "1(2023-2024)",
+            student: {
+                maHs: "hs002",
+            },
+        },
+    });
+    console.log(mark);
 });
 
 app.use("/api/student", studentRoutes);

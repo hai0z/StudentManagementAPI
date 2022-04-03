@@ -3,14 +3,14 @@ import {
     PrimaryColumn,
     Column,
     OneToMany,
-    JoinColumn,
-    ManyToOne,
-    OneToOne,
     BaseEntity,
+    AfterInsert,
 } from "typeorm";
 import Subject from "./Subject";
 import Statistical from "./Statistical";
 import Mark from "./Mark";
+import Student from "./Student";
+import Teaching from "./Teaching";
 @Entity({ name: "hocki" })
 export default class Semester extends BaseEntity {
     @PrimaryColumn({ type: "varchar", length: 20 })
@@ -22,17 +22,37 @@ export default class Semester extends BaseEntity {
     @Column({ type: "varchar", length: 15 })
     namHoc: string;
 
-    @OneToMany(() => Subject, (subject) => subject.hocKi_maHocKi)
-    maMonHoc: Subject[];
-
-    @ManyToOne(
+    @OneToMany(
         () => Statistical,
         (statistical: Statistical) => statistical.maHocKi,
         { onDelete: "CASCADE" }
     )
-    @JoinColumn({ name: "thongke_maThongke" })
-    thongKe_maThongke: Statistical;
+    thongKe_maThongke: Statistical[];
 
     @OneToMany(() => Mark, (mark) => mark.hocKi_maHocKi)
     mark: Mark[];
+
+    @OneToMany(() => Teaching, (teaching) => teaching.maHocKy)
+    teaching: Teaching[];
+
+    @AfterInsert()
+    async createMark() {
+        console.log("affter");
+        try {
+            const student = await Student.find({ relations: ["marks"] });
+            const subject = await Subject.find();
+            student.forEach(async (student) => {
+                subject.forEach(async (item) => {
+                    const mark = new Mark();
+                    mark.hocKi_maHocKi = this;
+                    student && (mark.student = student);
+                    mark.monHoc_maMonHoc = item;
+                    await mark.save();
+                    student?.marks.push(mark);
+                });
+            });
+        } catch (error: any) {
+            console.log(error.message);
+        }
+    }
 }

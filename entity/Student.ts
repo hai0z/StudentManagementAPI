@@ -8,6 +8,9 @@ import {
     ManyToMany,
     JoinTable,
     OneToOne,
+    OneToMany,
+    BeforeInsert,
+    AfterInsert,
 } from "typeorm";
 
 import Class from "./Class";
@@ -44,23 +47,38 @@ export default class Student extends BaseEntity {
     @JoinColumn({ name: "lop_maLop" })
     lop_maLop: Class;
 
-    @ManyToOne(() => Statistical, (statistical) => statistical.maHocSinh)
-    @JoinColumn({ name: "thongKe_maThongKe" })
-    thongKe_maThongKe: Statistical;
+    @OneToMany(() => Statistical, (statistical) => statistical.maHocSinh, {
+        onDelete: "CASCADE",
+    })
+    thongKe_maThongKe: Statistical[];
 
-    @ManyToMany(() => Mark, (mark) => mark.student, { cascade: true })
-    @JoinTable({ name: "hocsinh_has_diem" })
+    @OneToMany(() => Mark, (mark) => mark.student, { onDelete: "CASCADE" })
     marks: Mark[];
 
-    @ManyToMany(() => Subject, (subject) => subject.student)
+    @ManyToMany(() => Subject, (subject) => subject.student, {
+        onDelete: "CASCADE",
+    })
     @JoinTable({ name: "hocsinh_has_monhoc" })
     subjects: Subject[];
 
-    @ManyToMany(() => Teacher, (teacher) => teacher.students)
-    @JoinTable({ name: "hocsinh_has_giaovien" })
-    teachers: Teacher[];
-
-    @OneToOne(() => StudentAccount, (studentAccount) => studentAccount.account)
+    @OneToOne(
+        () => StudentAccount,
+        (studentAccount) => studentAccount.account,
+        { onDelete: "CASCADE" }
+    )
     @JoinColumn({ name: "studentAccount_id" })
     studentAccount: StudentAccount;
+
+    @BeforeInsert()
+    async createStudentAccount() {
+        try {
+            const studentAccount = new StudentAccount();
+            studentAccount.maHocSinh = this.maHs;
+            studentAccount.password = "1111";
+            await studentAccount.save();
+            this.studentAccount = studentAccount;
+        } catch (error: any) {
+            console.log(error.message);
+        }
+    }
 }

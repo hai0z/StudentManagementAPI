@@ -6,11 +6,11 @@ import {
     ManyToMany,
     JoinTable,
     OneToOne,
+    OneToMany,
 } from "typeorm";
 
 import Class from "./Class";
-import Student from "./Student";
-import Subject from "./Subject";
+import Teaching from "./Teaching";
 @Entity({ name: "giaovien" })
 export default class Teacher extends BaseEntity {
     @PrimaryColumn({ type: "varchar", length: 10 })
@@ -34,16 +34,9 @@ export default class Teacher extends BaseEntity {
     @Column({ type: "varchar", length: 50 })
     email: string;
 
-    @OneToOne(() => Class, (class_) => class_.teacher)
+    @OneToOne(() => Class, (class_) => class_.gvcn)
     class: Class;
 
-    @ManyToMany(() => Class, (class_) => class_.teacher)
-    @JoinTable({ name: "giaovien_has_lop" })
-    maLop: Class[];
-
-    @ManyToMany(() => Student, (student) => student.teachers)
-    students: Student[];
-
-    @ManyToMany(() => Subject, (subject) => subject.teachers)
-    subjects: Subject[];
+    @OneToMany(() => Teaching, (teaching) => teaching.maGiaoVien)
+    teaching: Teaching[];
 }

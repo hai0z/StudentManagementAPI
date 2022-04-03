@@ -74,9 +74,6 @@ const studentController = {
             return res.json({ message: error });
         }
     },
-    updateStudentMark: async (req: Request, res: Response) => {
-        const {} = req.body;
-    },
     createStudent: async (req: Request, res: Response) => {
         const { maHs, hoTen, ngaySinh, gioiTinh, lop_maLop, queQuan, diaChi } =
             req.body;
@@ -90,12 +87,13 @@ const studentController = {
                 diaChi,
                 lop_maLop,
             });
-            const subjects = await Subject.find();
-            student.subjects = subjects;
+            const allSubject = await Subject.find();
+            student.subjects = allSubject;
             await student.save();
-            return res.json(student);
-        } catch (error) {
-            return res.json({ message: error });
+            const { subjects, ...other } = student as Student;
+            return res.json({ success: true, ...other });
+        } catch (error: any) {
+            return res.json({ message: error.message });
         }
     },
     updateStudent: async (req: Request, res: Response) => {
@@ -179,6 +177,21 @@ const studentController = {
             }
         } catch (error) {
             return res.json({ message: error });
+        }
+    },
+    getMarkByClassAndSubject: async (req: Request, res: Response) => {
+        const { maLop, maMonHoc } = req.params;
+        try {
+            const mark = await Mark.find({
+                where: {
+                    monHoc_maMonHoc: maMonHoc,
+                    student: { lop_maLop: maLop },
+                },
+                relations: ["student"],
+            });
+            return res.json(mark);
+        } catch (error: any) {
+            return res.json({ message: error.message });
         }
     },
 };

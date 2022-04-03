@@ -13,6 +13,7 @@ import Mark from "./Mark";
 import Semester from "./Semester";
 import Student from "./Student";
 import Teacher from "./Teacher";
+import Teaching from "./Teaching";
 
 @Entity({ name: "monhoc" })
 export default class Subject extends BaseEntity {
@@ -22,17 +23,12 @@ export default class Subject extends BaseEntity {
     @Column({ type: "varchar", length: 50 })
     tenMonHoc: string;
 
-    @ManyToOne(() => Semester, (semester) => semester.maMonHoc)
-    @JoinColumn({ name: "hocKi_maHocKi" })
-    hocKi_maHocKi: Semester;
-
     @ManyToMany(() => Student, (student) => student.subjects)
     student: Student[];
 
     @OneToMany(() => Mark, (mark) => mark.monHoc_maMonHoc)
     mark: Mark[];
 
-    @ManyToMany(() => Teacher, (teacher) => teacher.subjects)
-    @JoinTable({ name: "monhoc_has_giaovien" })
-    teachers: Teacher[];
+    @OneToMany(() => Teaching, (teaching) => teaching.maMonHoc)
+    teaching: Teaching[];
 }

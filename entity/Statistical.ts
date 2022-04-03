@@ -1,23 +1,48 @@
-import { Entity, PrimaryColumn, Column, OneToMany, ManyToMany } from "typeorm";
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    OneToMany,
+    ManyToMany,
+    ManyToOne,
+    JoinColumn,
+} from "typeorm";
 import Student from "./Student";
 import Semester from "./Semester";
 import Mark from "./Mark";
 
 @Entity({ name: "thongke" })
 export default class Statistical {
-    @PrimaryColumn({ type: "varchar", length: 10 })
-    maThongke: string;
+    @PrimaryGeneratedColumn()
+    maThongke: number;
 
     @Column()
     diemTrungbinh: number;
 
-    @OneToMany(() => Student, (student: Student) => student.thongKe_maThongKe)
-    maHocSinh: Student[];
+    @Column()
+    xepLoai: string;
 
-    @OneToMany(
+    @ManyToOne(() => Student, (student: Student) => student.thongKe_maThongKe)
+    @JoinColumn({ name: "hocSinh_maHocSinh" })
+    maHocSinh: Student;
+
+    @ManyToOne(
         () => Semester,
         (semester: Semester) => semester.thongKe_maThongke,
         { onDelete: "CASCADE" }
     )
-    maHocKi: Semester[];
+    @JoinColumn({ name: "hocKy_maHocKy" })
+    maHocKi: Semester;
+
+    async getMark() {
+        const mark = await Mark.find({
+            where: {
+                hocKi_maHocKi: this.maHocKi,
+                student: {
+                    maHs: this.maHocSinh.maHs,
+                },
+            },
+        });
+        return mark;
+    }
 }

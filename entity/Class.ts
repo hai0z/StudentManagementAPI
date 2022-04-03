@@ -8,10 +8,12 @@ import {
     JoinTable,
     OneToOne,
     JoinColumn,
+    ManyToOne,
 } from "typeorm";
 import Grade from "./grade";
 import Student from "./Student";
 import Teacher from "./Teacher";
+import Teaching from "./Teaching";
 @Entity({ name: "lop" })
 export default class Class extends BaseEntity {
     @PrimaryColumn({ type: "varchar", length: 10 })
@@ -23,7 +25,7 @@ export default class Class extends BaseEntity {
     @Column({ type: "varchar", length: 12 })
     nienKhoa: string;
 
-    @OneToOne(() => Grade, (grade) => grade.class)
+    @ManyToOne(() => Grade, (grade) => grade.class)
     @JoinColumn({ name: "maKhoi" })
     grade: Grade;
 
@@ -34,7 +36,6 @@ export default class Class extends BaseEntity {
     @OneToMany(() => Student, (student) => student.lop_maLop)
     students: Student[];
 
-    @ManyToMany(() => Teacher, (teacher) => teacher.maLop)
-    @JoinTable({ name: "giaovien_has_lop" })
-    teacher: Teacher[];
+    @OneToMany(() => Teaching, (teaching) => teaching.maLop)
+    teaching: Teaching[];
 }

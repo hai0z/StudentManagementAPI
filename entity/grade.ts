@@ -1,4 +1,4 @@
-import { BaseEntity, PrimaryColumn, Column, OneToOne, Entity } from "typeorm";
+import { BaseEntity, PrimaryColumn, Column, OneToMany, Entity } from "typeorm";
 import Class from "./Class";
 
 @Entity({ name: "khoi" })
@@ -9,6 +9,6 @@ export default class Grade extends BaseEntity {
     @Column({ type: "varchar", length: 20 })
     tenKhoi: string;
 
-    @OneToOne(() => Class, (class_) => class_.grade)
-    class: Class;
+    @OneToMany(() => Class, (class_) => class_.grade)
+    class: Class[];
 }

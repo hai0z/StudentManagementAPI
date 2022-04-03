@@ -10,6 +10,17 @@ const classController = {
             return res.json({ message: error });
         }
     },
+    getClassById: async (req: Request, res: Response) => {
+        try {
+            const class_ = await Class.findOne(req.params.id, {
+                relations: ["teacher_maGiaoVien"],
+            });
+            return res.json(class_);
+        } catch (error) {
+            return res.json({ message: error });
+        }
+    },
+
     getStudentByClass: async (req: Request, res: Response) => {
         const { id } = req.params;
         try {
@@ -24,19 +35,15 @@ const classController = {
     getTeaherByClass: async (req: Request, res: Response) => {
         const { id } = req.params;
         try {
-            const class_ = await Class.findOne(id, { relations: ["teacher"] });
-
-            const allTeacher = await Teacher.find({ relations: ["subjects"] });
-
-            const { teacher, ...other } = class_ as Class;
-
-            const subjectsOfTeacher = allTeacher?.filter((subject) => {
-                return class_?.teacher
-                    ?.map((teacher) => teacher.maGiaoVien)
-                    .includes(subject.maGiaoVien);
-            });
-
-            return res.json({ lop: other, teacher: subjectsOfTeacher });
+            // const class_ = await Class.findOne(id, { relations: ["teacher"] });
+            // const allTeacher = await Teacher.find({ relations: ["subjects"] });
+            // const { teacher, ...other } = class_ as Class;
+            // const subjectsOfTeacher = allTeacher?.filter((subject) => {
+            //     return class_?.teacher
+            //         ?.map((teacher) => teacher.maGiaoVien)
+            //         .includes(subject.maGiaoVien);
+            // });
+            // return res.json({ lop: other, teacher: subjectsOfTeacher });
         } catch (error) {
             return res.json({ message: error });
         }

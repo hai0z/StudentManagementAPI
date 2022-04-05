@@ -2,6 +2,7 @@ import Teacher from "../entity/Teacher";
 import { Request, Response } from "express";
 import Mark from "../entity/Mark";
 import Teaching from "../entity/Teaching";
+import Student from "../entity/Student";
 const teacherController = {
     getAllTeacher: async (_: Request, res: Response): Promise<Response> => {
         try {
@@ -11,10 +12,18 @@ const teacherController = {
             return res.json({ message: error });
         }
     },
-    getClassByTeacher: async (
-        req: Request,
-        res: Response
-    ): Promise<Response> => {
+    getTeacherById: async (req: Request, res: Response): Promise<Response> => {
+        const { teacherId } = req.params;
+        try {
+            const teacher = await Teacher.findOne(teacherId, {
+                relations: ["class"],
+            });
+            return res.json(teacher);
+        } catch (error) {
+            return res.json({ message: error });
+        }
+    },
+    getClass: async (req: Request, res: Response): Promise<Response> => {
         const { teacherId } = req.params;
         try {
             const teaching = await Teaching.find({
@@ -28,6 +37,22 @@ const teacherController = {
             return res.json({ message: error.message });
         }
     },
+    getMark: async (req: Request, res: Response) => {
+        const { maLop, maMonHoc, maHocKi } = req.params;
+        try {
+            const mark = await Mark.find({
+                where: {
+                    monHoc_maMonHoc: maMonHoc,
+                    student: { lop_maLop: maLop },
+                    hocKi_maHocKi: { maHocKi: maHocKi },
+                },
+                relations: ["student"],
+            });
+            return res.json(mark);
+        } catch (error: any) {
+            return res.json({ message: error.message });
+        }
+    },
     createTeacher: async (req: Request, res: Response): Promise<Response> => {
         const {
             maGiaoVien,
@@ -37,6 +62,7 @@ const teacherController = {
             diaChi,
             soDienThoai,
             email,
+            class_,
         } = req.body;
         try {
             const teacher = Teacher.create({
@@ -47,6 +73,7 @@ const teacherController = {
                 diaChi,
                 soDienThoai,
                 email,
+                class: class_,
             });
             await teacher.save();
             return res.json(teacher);
@@ -54,7 +81,68 @@ const teacherController = {
             return res.json({ message: error });
         }
     },
+    updateTeacher: async (req: Request, res: Response) => {
+        const { teacherId } = req.params;
+        const {
+            maGiaoVien,
+            tenGiaoVien,
+            gioiTinh,
+            ngaySinh,
+            diaChi,
+            soDienThoai,
+            email,
+            class_,
+        } = req.body;
+        try {
+            const teacher = await Teacher.findOne(teacherId);
+            if (teacher) {
+                await Teacher.update(teacherId, {
+                    maGiaoVien: maGiaoVien ?? teacher.maGiaoVien,
+                    tenGiaoVien: tenGiaoVien ?? teacher.tenGiaoVien,
+                    gioiTinh: gioiTinh ?? teacher.gioiTinh,
+                    ngaySinh: ngaySinh ?? teacher.ngaySinh,
+                    diaChi: diaChi ?? teacher.diaChi,
+                    soDienThoai: soDienThoai ?? teacher.soDienThoai,
+                    email: email ?? teacher.email,
+                    class: class_ ?? teacher.class,
+                });
+                return res.json({ message: "Update success", teacher });
+            }
+        } catch (error: any) {
+            return res.json({ message: error.message });
+        }
+    },
+    createTeaching: async (req: Request, res: Response): Promise<Response> => {
+        const { maGiaoVien, maLop, maMonHoc, maHocKy } = req.body;
+        try {
+            const teaching = Teaching.create({
+                maGiaoVien,
+                maLop,
+                maMonHoc,
+                maHocKy,
+            });
+            await teaching.save();
+            return res.json(teaching);
+        } catch (error) {
+            return res.json({ message: error });
+        }
+    },
+    createMark: async (req: Request, res: Response) => {
+        const { maHocKi, maMonHoc, id } = req.body;
 
+        try {
+            const student = await Student.findOne(id, { relations: ["marks"] });
+            const mark = Mark.create({
+                hocKi_maHocKi: maHocKi,
+                monHoc_maMonHoc: maMonHoc,
+            });
+            student?.marks.push(mark);
+            await student?.save();
+            return res.json(student);
+        } catch (error) {
+            return res.json({ message: error });
+        }
+    },
     updateMark: async (req: Request, res: Response) => {
         try {
             const {

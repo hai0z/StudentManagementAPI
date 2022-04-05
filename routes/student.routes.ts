@@ -7,7 +7,10 @@ route.get("/", studentController.getAllStudent);
 route.get("/:id", studentController.getStudentById);
 route.get("/:id/marks/:maHocKi", studentController.getStudentMark);
 route.get("/:id/marks/:maHocKi/tong-ket", studentController.getDiemTongKet);
-route.get("/:maLop/:maMonHoc", studentController.getMarkByClassAndSubject);
+route.get(
+    "/:maLop/:maMonHoc/:maHocKi",
+    studentController.getMarkByClassAndSubject
+);
 //post
 route.post("/create", studentController.createStudent);
 route.post("/:id/createMark", studentController.createMark);

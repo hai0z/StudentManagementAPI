@@ -1,6 +1,6 @@
 import Class from "../entity/Class";
 import { Request, Response } from "express";
-import Teacher from "../entity/Teacher";
+
 const classController = {
     getAllClass: async (_: Request, res: Response) => {
         try {
@@ -11,41 +11,38 @@ const classController = {
         }
     },
     getClassById: async (req: Request, res: Response) => {
+        const { classId } = req.params;
         try {
-            const class_ = await Class.findOne(req.params.id, {
-                relations: ["teacher_maGiaoVien"],
-            });
+            const class_ = await Class.findOne(classId);
             return res.json(class_);
         } catch (error) {
             return res.json({ message: error });
         }
     },
-
     getStudentByClass: async (req: Request, res: Response) => {
-        const { id } = req.params;
+        const { classId } = req.params;
         try {
-            const class_ = await Class.findOne(id, {
-                relations: ["students", "gvcn", "grade"],
+            const class_ = await Class.findOne(classId, {
+                relations: ["students", "grade"],
             });
             return res.json(class_);
         } catch (error) {
             return res.json({ message: error });
         }
     },
-    getTeaherByClass: async (req: Request, res: Response) => {
-        const { id } = req.params;
+    createClass: async (req: Request, res: Response) => {
+        const { maLop, tenLop, gvcn, grade, nienKhoa } = req.body;
         try {
-            // const class_ = await Class.findOne(id, { relations: ["teacher"] });
-            // const allTeacher = await Teacher.find({ relations: ["subjects"] });
-            // const { teacher, ...other } = class_ as Class;
-            // const subjectsOfTeacher = allTeacher?.filter((subject) => {
-            //     return class_?.teacher
-            //         ?.map((teacher) => teacher.maGiaoVien)
-            //         .includes(subject.maGiaoVien);
-            // });
-            // return res.json({ lop: other, teacher: subjectsOfTeacher });
-        } catch (error) {
-            return res.json({ message: error });
+            const class_ = new Class();
+            class_.maLop = maLop;
+            class_.tenLop = tenLop;
+            class_.gvcn = gvcn;
+            class_.grade = grade;
+            class_.nienKhoa = nienKhoa;
+            await class_.save();
+            return res.json({ message: "Create class successfully" });
+        } catch (error: any) {
+            return res.json({ message: error.message });
         }
     },
 };

@@ -3,14 +3,15 @@ import {
     Entity,
     BaseEntity,
     Column,
-    ManyToMany,
-    JoinTable,
     OneToOne,
     OneToMany,
+    BeforeInsert,
+    JoinColumn,
 } from "typeorm";
 
 import Class from "./Class";
 import Teaching from "./Teaching";
+import TeacherAccount from "./teacherAccount";
 @Entity({ name: "giaovien" })
 export default class Teacher extends BaseEntity {
     @PrimaryColumn({ type: "varchar", length: 10 })
@@ -39,4 +40,21 @@ export default class Teacher extends BaseEntity {
 
     @OneToMany(() => Teaching, (teaching) => teaching.maGiaoVien)
     teaching: Teaching[];
+
+    @OneToOne(() => TeacherAccount, (teacherAccount) => teacherAccount.account)
+    @JoinColumn({ name: "teacherAccount_id" })
+    teacherAccount: TeacherAccount;
+
+    @BeforeInsert()
+    async createTeacherAccount() {
+        try {
+            const teacherAccount = new TeacherAccount();
+            teacherAccount.maGiaoVien = this.maGiaoVien;
+            teacherAccount.password = "1111";
+            await teacherAccount.save();
+            this.teacherAccount = teacherAccount;
+        } catch (error: any) {
+            console.log(error.message);
+        }
+    }
 }

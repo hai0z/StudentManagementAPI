@@ -10,16 +10,11 @@ import classRoutes from "./routes/class.routes";
 import teacherRoutes from "./routes/teacher.routes";
 import semesterRoutes from "./routes/semester.routes";
 import loginRoutes from "./routes/login.routes";
-//
+
 dotenv.config();
 
 const app: Application = express();
 const PORT = process.env.PORT || 8080;
-//test
-import Mark from "./entity/Mark";
-import Student from "./entity/Student";
-import Semester from "./entity/Semester";
-import Subject from "./entity/Subject";
 
 const bootstrap = async (): Promise<void> => {
     await createConnection()
@@ -35,15 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.get("/", async (req: Request, res: Response) => {
-    const mark = await Mark.find({
-        where: {
-            hocKi_maHocKi: "1(2023-2024)",
-            student: {
-                maHs: "hs002",
-            },
-        },
-    });
-    console.log(mark);
+    return res.send("hello");
 });
 
 app.use("/api/student", studentRoutes);

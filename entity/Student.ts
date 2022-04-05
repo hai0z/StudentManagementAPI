@@ -55,12 +55,6 @@ export default class Student extends BaseEntity {
     @OneToMany(() => Mark, (mark) => mark.student, { onDelete: "CASCADE" })
     marks: Mark[];
 
-    @ManyToMany(() => Subject, (subject) => subject.student, {
-        onDelete: "CASCADE",
-    })
-    @JoinTable({ name: "hocsinh_has_monhoc" })
-    subjects: Subject[];
-
     @OneToOne(
         () => StudentAccount,
         (studentAccount) => studentAccount.account,

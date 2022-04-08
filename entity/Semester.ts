@@ -37,7 +37,7 @@ export default class Semester extends BaseEntity {
 
     @AfterInsert()
     async createMark() {
-        console.log("affter");
+        console.log("affter insert semester");
         try {
             const student = await Student.find({ relations: ["marks"] });
             const subject = await Subject.find();
@@ -50,6 +50,21 @@ export default class Semester extends BaseEntity {
                     await mark.save();
                     student?.marks.push(mark);
                 });
+            });
+        } catch (error: any) {
+            console.log(error.message);
+        }
+    }
+    @AfterInsert()
+    async createStatistical() {
+        console.log("affter insert semester");
+        try {
+            const student = await Student.find({ relations: ["marks"] });
+            student.forEach(async (student) => {
+                const statistical = new Statistical();
+                statistical.maHocKi = this;
+                statistical.maHocSinh = student;
+                await statistical.save();
             });
         } catch (error: any) {
             console.log(error.message);

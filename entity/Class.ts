@@ -29,7 +29,9 @@ export default class Class extends BaseEntity {
     @JoinColumn({ name: "maKhoi" })
     grade: Grade;
 
-    @OneToOne(() => Teacher, (teacher) => teacher.class)
+    @OneToOne(() => Teacher, (teacher) => teacher.class, {
+        nullable: true,
+    })
     @JoinColumn({ name: "gvcn" })
     gvcn: Teacher;
 

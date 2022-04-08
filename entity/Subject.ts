@@ -7,7 +7,6 @@ import {
     BaseEntity,
 } from "typeorm";
 import Mark from "./Mark";
-import Student from "./Student";
 import Teaching from "./Teaching";
 
 @Entity({ name: "monhoc" })

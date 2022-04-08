@@ -5,20 +5,15 @@ import {
     PrimaryColumn,
     ManyToOne,
     JoinColumn,
-    ManyToMany,
-    JoinTable,
     OneToOne,
     OneToMany,
     BeforeInsert,
-    AfterInsert,
 } from "typeorm";
 
 import Class from "./Class";
 import Mark from "./Mark";
 import Statistical from "./Statistical";
 import StudentAccount from "./StudentAccount";
-import Subject from "./Subject";
-import Teacher from "./Teacher";
 
 @Entity({ name: "hocsinh" })
 export default class Student extends BaseEntity {

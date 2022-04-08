@@ -3,13 +3,9 @@ import {
     PrimaryGeneratedColumn,
     Column,
     JoinColumn,
-    ManyToMany,
     BaseEntity,
     ManyToOne,
-    BeforeInsert,
     BeforeUpdate,
-    AfterUpdate,
-    OneToMany,
 } from "typeorm";
 import Semester from "./Semester";
 import Student from "./Student";

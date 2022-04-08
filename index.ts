@@ -10,6 +10,9 @@ import classRoutes from "./routes/class.routes";
 import teacherRoutes from "./routes/teacher.routes";
 import semesterRoutes from "./routes/semester.routes";
 import loginRoutes from "./routes/login.routes";
+import markRoutes from "./routes/mark.routes";
+import subjectRoutes from "./routes/subject.routes";
+import Statistical from "./entity/Statistical";
 
 dotenv.config();
 
@@ -30,7 +33,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.get("/", async (req: Request, res: Response) => {
-    return res.send("hello");
+    const sta = await Statistical.find();
+    res.json(sta);
 });
 
 app.use("/api/student", studentRoutes);
@@ -38,3 +42,5 @@ app.use("/api/class", classRoutes);
 app.use("/api/teacher", teacherRoutes);
 app.use("/api/semester", semesterRoutes);
 app.use("/api/login", loginRoutes);
+app.use("/api/mark", markRoutes);
+app.use("/api/subject", subjectRoutes);

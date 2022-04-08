@@ -16,7 +16,7 @@ export default class Statistical extends BaseEntity {
     maThongke: number;
 
     @Column({ type: "float", nullable: true })
-    diemTrungbinh: number;
+    diemTrungBinh: number;
 
     @ManyToOne(() => Student, (student: Student) => student.thongKe_maThongKe)
     @JoinColumn({ name: "hocSinh_maHocSinh" })
@@ -31,23 +31,21 @@ export default class Statistical extends BaseEntity {
     maHocKi: Semester;
 
     @AfterLoad()
-    async tinhDiemTrungBinh() {
-        console.log("after load");
-        // const mark = await Student.findOne(this.maHocSinh, {
-        //     relations: ["marks"],
-        // });
-        // const arrMark: any = [];
-        // console.log(mark);
-        // mark?.marks.forEach((item) => {
-        //     if (item.trungBinhMon != null) {
-        //         arrMark.push(item.trungBinhMon);
-        //     }
-        // });
-        // if (arrMark.length == mark?.marks.length) {
-        //     this.diemTrungbinh = +(
-        //         arrMark.reduce((a: any, b: any) => a + b) / arrMark.length
-        //     ).toFixed(1);
-        // }
-        this.diemTrungbinh = 10;
+    async tinhDiemTrungBinh(maHs: string) {
+        const mark = await Student.findOne(maHs, {
+            relations: ["marks"],
+        });
+        const arrMark: any = [];
+        mark?.marks.forEach((item) => {
+            if (item.trungBinhMon != null) {
+                arrMark.push(item.trungBinhMon);
+            }
+        });
+        if (arrMark.length == mark?.marks.length) {
+            this.diemTrungBinh = +(
+                arrMark.reduce((a: any, b: any) => a + b) / arrMark.length
+            ).toFixed(1);
+        }
+        return this.diemTrungBinh;
     }
 }

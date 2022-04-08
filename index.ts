@@ -33,7 +33,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.get("/", async (req: Request, res: Response) => {
-    const sta = await Statistical.find();
+    const sta = await Statistical.findOne(1);
+    const mark: any = await sta?.tinhDiemTrungBinh("hs001");
+    sta!.diemTrungBinh = mark;
+    await Statistical.update(1, sta!);
+    await sta?.save();
     res.json(sta);
 });
 

@@ -1,7 +1,9 @@
 import Student from "../entity/Student";
 import { Request, Response } from "express";
 import Mark from "../entity/Mark";
-
+import Subject from "../entity/Subject";
+import Semester from "../entity/Semester";
+import Statistical from "../entity/Statistical";
 const studentController = {
     getAllStudent: async (_: Request, res: Response) => {
         try {
@@ -76,6 +78,7 @@ const studentController = {
     createStudent: async (req: Request, res: Response) => {
         const { maHs, hoTen, ngaySinh, gioiTinh, lop_maLop, queQuan, diaChi } =
             req.body;
+        const currentSemester = "1(2021-2022)";
         try {
             const student = Student.create({
                 maHs,
@@ -86,8 +89,31 @@ const studentController = {
                 diaChi,
                 lop_maLop,
             });
+            const check = await Student.findOne(maHs);
+            if (check) {
+                return res.json({ message: "Student already exists" });
+            }
             await student.save();
-
+            const relations = await Student.findOne(maHs);
+            const subject = await Subject.find();
+            const semester = await Semester.findOne(currentSemester);
+            const statistical = new Statistical();
+            if (semester) {
+                statistical.maHocKi = semester;
+            }
+            statistical.maHocSinh = student;
+            await statistical.save();
+            subject.forEach(async (item) => {
+                const mark = new Mark();
+                if (semester) {
+                    mark.hocKi_maHocKi = semester;
+                }
+                mark.student = relations;
+                mark.monHoc_maMonHoc = item;
+                await mark.save();
+                student?.marks?.push(mark);
+            });
+            await student.save();
             return res.json({ success: true, student });
         } catch (error: any) {
             return res.json({ message: error.message });
@@ -111,7 +137,7 @@ const studentController = {
                 });
                 return res.json(student);
             }
-            return res.json({ message: "Không tìm thấy sinh viên" });
+            return res.json({ message: "Không tìm thấy học sinh" });
         } catch (error) {
             return res.json({ message: error });
         }

@@ -1,11 +1,4 @@
-import {
-    Entity,
-    PrimaryColumn,
-    Column,
-    ManyToMany,
-    OneToMany,
-    BaseEntity,
-} from "typeorm";
+import { Entity, PrimaryColumn, Column, OneToMany, BaseEntity } from "typeorm";
 import Mark from "./Mark";
 import Teaching from "./Teaching";
 
@@ -17,7 +10,9 @@ export default class Subject extends BaseEntity {
     @Column({ type: "varchar", length: 50 })
     tenMonHoc: string;
 
-    @OneToMany(() => Mark, (mark) => mark.monHoc_maMonHoc)
+    @OneToMany(() => Mark, (mark) => mark.monHoc_maMonHoc, {
+        onDelete: "CASCADE",
+    })
     mark: Mark[];
 
     @OneToMany(() => Teaching, (teaching) => teaching.maMonHoc)

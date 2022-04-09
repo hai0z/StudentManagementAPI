@@ -49,7 +49,9 @@ export default class Mark extends BaseEntity {
     @JoinColumn({ name: "monHoc_maMonHoc" })
     monHoc_maMonHoc: Subject;
 
-    @ManyToOne(() => Semester, (semester) => semester.mark)
+    @ManyToOne(() => Semester, (semester) => semester.mark, {
+        onDelete: "CASCADE",
+    })
     @JoinColumn({ name: "hocKi_maHocKi" })
     hocKi_maHocKi: Semester;
 

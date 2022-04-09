@@ -5,6 +5,7 @@ import {
     OneToMany,
     BaseEntity,
     AfterInsert,
+    AfterUpdate,
 } from "typeorm";
 import Subject from "./Subject";
 import Statistical from "./Statistical";
@@ -29,14 +30,16 @@ export default class Semester extends BaseEntity {
     )
     thongKe_maThongke: Statistical[];
 
-    @OneToMany(() => Mark, (mark) => mark.hocKi_maHocKi)
+    @OneToMany(() => Mark, (mark) => mark.hocKi_maHocKi, {
+        onDelete: "CASCADE",
+    })
     mark: Mark[];
 
     @OneToMany(() => Teaching, (teaching) => teaching.maHocKy)
     teaching: Teaching[];
 
     @AfterInsert()
-    async createMark() {
+    async createMarkForAllStudent() {
         console.log("affter insert semester");
         try {
             const student = await Student.find({ relations: ["marks"] });
@@ -59,7 +62,9 @@ export default class Semester extends BaseEntity {
     async createStatistical() {
         console.log("affter insert semester");
         try {
-            const student = await Student.find({ relations: ["marks"] });
+            const student = await Student.find({
+                relations: ["thongKe_maThongKe"],
+            });
             student.forEach(async (student) => {
                 const statistical = new Statistical();
                 statistical.maHocKi = this;

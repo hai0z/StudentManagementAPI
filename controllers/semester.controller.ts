@@ -17,6 +17,15 @@ const semesterController = {
                 namHoc,
                 hocKi,
             });
+            //check if semester exist
+            const checkSemester = await Semester.findOne({
+                where: {
+                    maHocKi,
+                },
+            });
+            if (checkSemester) {
+                return res.json({ message: "Semester already exist" });
+            }
             await semester.save();
             return res.json(semester);
         } catch (error) {

@@ -3,6 +3,7 @@ import loginController from "../controllers/login.controller";
 
 const route: Router = Router();
 
-route.post("/?role=student", loginController.studentLogin);
-route.post("/?role=teacher", loginController.teacherLogin);
+route.post("/student", loginController.studentLogin);
+route.post("/teacher", loginController.teacherLogin);
+route.post("/admin", loginController.adminLogin);
 export default route;

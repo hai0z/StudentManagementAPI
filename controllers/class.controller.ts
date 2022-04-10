@@ -23,7 +23,7 @@ const classController = {
         const { classId } = req.params;
         try {
             const class_ = await Class.findOne(classId, {
-                relations: ["students", "grade"],
+                relations: ["students"],
             });
             return res.json(class_);
         } catch (error) {
@@ -31,7 +31,7 @@ const classController = {
         }
     },
     createClass: async (req: Request, res: Response) => {
-        const { maLop, tenLop, gvcn, grade, nienKhoa } = req.body;
+        const { maLop, tenLop, gvcn, grade, nienKhoa, student } = req.body;
         try {
             const class_ = new Class();
             class_.maLop = maLop;
@@ -39,8 +39,20 @@ const classController = {
             class_.gvcn = gvcn;
             class_.grade = grade;
             class_.nienKhoa = nienKhoa;
+            class_.students = student;
+            //check if class exists
+            const classExists = await Class.findOne({
+                where: {
+                    maLop,
+                },
+            });
+            if (classExists) {
+                return res.status(500).json({ message: "class exists" });
+            }
             await class_.save();
-            return res.json({ message: "Create class successfully" });
+            return res
+                .status(201)
+                .json({ message: "Create class successfully", class_ });
         } catch (error: any) {
             return res.json({ message: error.message });
         }

@@ -38,7 +38,9 @@ export default class Student extends BaseEntity {
     @Column({ type: "varchar", length: 500 })
     img: string;
 
-    @ManyToOne(() => Class, (class_) => class_.students)
+    @ManyToOne(() => Class, (class_) => class_.students, {
+        onDelete: "SET NULL",
+    })
     @JoinColumn({ name: "lop_maLop" })
     lop_maLop: Class;
 

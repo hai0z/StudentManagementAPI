@@ -35,9 +35,15 @@ export default class Class extends BaseEntity {
     @JoinColumn({ name: "gvcn" })
     gvcn: Teacher;
 
-    @OneToMany(() => Student, (student) => student.lop_maLop)
+    @OneToMany(() => Student, (student) => student.lop_maLop, {
+        onDelete: "DEFAULT",
+    })
     students: Student[];
 
     @OneToMany(() => Teaching, (teaching) => teaching.maLop)
     teaching: Teaching[];
+
+    addStudent(student: Student) {
+        this.students.push(student);
+    }
 }

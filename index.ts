@@ -12,7 +12,10 @@ import semesterRoutes from "./routes/semester.routes";
 import loginRoutes from "./routes/login.routes";
 import markRoutes from "./routes/mark.routes";
 import subjectRoutes from "./routes/subject.routes";
+import statisticalRoutes from "./routes/statistical.routes";
 import Statistical from "./entity/Statistical";
+import Student from "./entity/Student";
+import Class from "./entity/Class";
 
 dotenv.config();
 
@@ -33,12 +36,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.get("/", async (req: Request, res: Response) => {
-    const sta = await Statistical.findOne(1);
-    const mark: any = await sta?.tinhDiemTrungBinh("hs001");
-    sta!.diemTrungBinh = mark;
-    await Statistical.update(1, sta!);
-    await sta?.save();
-    res.json(sta);
+    const studentList = await Student.find({
+        where: {
+            lop_maLop: null,
+        },
+    });
+    res.json(studentList);
 });
 
 app.use("/api/student", studentRoutes);
@@ -48,3 +51,4 @@ app.use("/api/semester", semesterRoutes);
 app.use("/api/login", loginRoutes);
 app.use("/api/mark", markRoutes);
 app.use("/api/subject", subjectRoutes);
+app.use("/api/statistical", statisticalRoutes);

@@ -57,5 +57,23 @@ const classController = {
             return res.json({ message: error.message });
         }
     },
+    updateClass: async (req: Request, res: Response) => {
+        const { classId } = req.params;
+        const { maLop, tenLop, gvcn, grade, nienKhoa, student } = req.body;
+        try {
+            const class_ = new Class();
+            class_.maLop = classId;
+            class_.tenLop = tenLop;
+            class_.gvcn = gvcn;
+            class_.grade = grade;
+            class_.nienKhoa = nienKhoa;
+            class_.students = student;
+
+            await class_.save();
+            return res.json({ message: "Update class successfully", class_ });
+        } catch (error: any) {
+            return res.json({ message: error.message });
+        }
+    },
 };
 export default classController;

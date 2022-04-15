@@ -19,9 +19,9 @@ const markController = {
         try {
             const mark = await Mark.find({
                 where: {
-                    monHoc_maMonHoc: maMonHoc,
                     student: { lop_maLop: maLop },
-                    hocKi_maHocKi: { maHocKi: maHocKi },
+                    monHoc_maMonHoc: maMonHoc,
+                    hocKi_maHocKi: maHocKi,
                 },
                 relations: ["student"],
             });

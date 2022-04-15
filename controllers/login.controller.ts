@@ -5,16 +5,18 @@ import Admin from "../entity/admin";
 const loginController = {
     studentLogin: async (req: Request, res: Response): Promise<Response> => {
         try {
-            const { studentId, password } = req.body;
+            const { maHs, password } = req.body;
             const user = await StudentAccount.findOne({
                 relations: ["account"],
                 where: {
-                    maHocSinh: studentId,
+                    maHocSinh: maHs,
                     password: password,
                 },
             });
             if (!user) {
-                return res.json({ message: "Wrong username or password" });
+                return res
+                    .status(401)
+                    .json({ message: "Wrong username or password" });
             }
             return res.json({
                 user: user.account,
@@ -26,16 +28,18 @@ const loginController = {
     },
     teacherLogin: async (req: Request, res: Response): Promise<Response> => {
         try {
-            const { username, password } = req.body;
+            const { maGiaoVien, password } = req.body;
             const user = await TeacherAccount.findOne({
                 relations: ["account"],
                 where: {
-                    maGiaoVien: username,
+                    maGiaoVien: maGiaoVien,
                     password: password,
                 },
             });
             if (!user) {
-                return res.json({ message: "Wrong username or password" });
+                return res
+                    .status(401)
+                    .json({ message: "Wrong username or password" });
             }
             return res.json({
                 user: user.account,
@@ -55,7 +59,9 @@ const loginController = {
                 },
             });
             if (!user) {
-                return res.json({ message: "Wrong username or password" });
+                return res
+                    .status(401)
+                    .json({ message: "Wrong username or password" });
             }
             return res.json({
                 user: user,

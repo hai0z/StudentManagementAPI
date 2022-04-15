@@ -40,6 +40,7 @@ export default class Student extends BaseEntity {
 
     @ManyToOne(() => Class, (class_) => class_.students, {
         onDelete: "SET NULL",
+        onUpdate: "CASCADE",
     })
     @JoinColumn({ name: "lop_maLop" })
     lop_maLop: Class;

@@ -7,5 +7,8 @@ route.get("/:classId", classController.getClassById);
 route.get("/:classId/student", classController.getStudentByClass);
 
 //post
-route.post("/create", classController.createClass);
+route.post("/", classController.createClass);
+
+//put
+route.put("/:classId", classController.updateClass);
 export default route;

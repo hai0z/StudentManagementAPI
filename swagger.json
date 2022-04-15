@@ -1,0 +1,724 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "API",
+        "description": "API",
+        "version": "1.0.0"
+    },
+    "host": "26.154.2.2:8080",
+    "basePath": "/api",
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "tags": [
+        {
+            "name": "student",
+            "description": "Student"
+        },
+        {
+            "name": "teacher",
+            "description": "Teacher"
+        },
+        {
+            "name": "class",
+            "description": "Class"
+        },
+        {
+            "name": "subject",
+            "description": "Subject"
+        },
+        {
+            "name": "semester",
+            "description": "Semester"
+        },
+        {
+            "name": "mark",
+            "description": "Mark"
+        },
+        {
+            "name": "login",
+            "description": "Login"
+        }
+    ],
+    "definitions": {
+        "student": {},
+        "teacher": {},
+        "class": {},
+        "subject": {},
+        "semester": {},
+        "mark": {},
+        "login": {}
+    },
+    "paths": {
+        "/student": {
+            "get": {
+                "tags": ["student"],
+                "summary": "Get all students",
+                "description": "Get all students",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/student"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["student"],
+                "summary": "Create a new student",
+                "description": "Create a new student",
+                "parameters": [
+                    {
+                        "name": "maHs",
+                        "in": "body",
+                        "description": "MaHS of the student",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "hoTen",
+                        "in": "body",
+                        "description": "HoTen of the student",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "gioiTinh",
+                        "in": "body",
+                        "description": "GioiTinh of the student (true/false) : 0: Nam,1 :Nu",
+                        "schema": {
+                            "type": "string",
+
+                            "example": 0
+                        }
+                    },
+                    {
+                        "name": "ngaySinh",
+                        "in": "body",
+                        "description": "NgaySinh of the student",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "diaChi",
+                        "in": "body",
+                        "description": "DiaChi of the student",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "queQuan",
+                        "in": "body",
+                        "description": "queQuan of the student",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/student"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["student"],
+                "summary": "Update a student",
+                "description": "Update a student",
+                "parameters": [
+                    {
+                        "name": "student",
+                        "in": "body",
+                        "description": "Student object that needs to be updated in the store",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/student"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/student"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/student/{id}/marks/{semesterId}": {
+            "get": {
+                "tags": ["student"],
+                "summary": "Get all marks of a student",
+                "description": "Get all marks of a student",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of student",
+                        "required": true,
+                        "type": "string",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "semesterId",
+                        "in": "path",
+                        "description": "ID of semester",
+                        "required": true,
+                        "type": "string",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/mark"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/student/{id}": {
+            "get": {
+                "tags": ["student"],
+                "summary": "Get a student by id",
+                "description": "Get a student",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of student",
+                        "required": true,
+                        "type": "string",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/student"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/student/{id}/marks/{semesterId}/tong-ket": {
+            "get": {
+                "tags": ["student"],
+                "summary": "Get tong ket of a student",
+                "description": "Get tong ket of a student",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of student",
+                        "required": true,
+                        "type": "string",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "semesterId",
+                        "in": "path",
+                        "description": "ID of semester",
+                        "required": true,
+                        "type": "string",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/teacher": {
+            "get": {
+                "tags": ["teacher"],
+                "summary": "Get all teachers",
+                "description": "Get all teachers",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/teacher"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["teacher"],
+                "summary": "Create a teacher",
+                "description": "Create a teacher",
+                "parameters": [
+                    {
+                        "name": "maGiaoVien",
+                        "in": "body",
+                        "description": "maGiaoVien of the teacher",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tenGiaoVien",
+                        "in": "body",
+                        "description": "tenGiaoVien of the teacher",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ngaySinh",
+                        "in": "body",
+                        "description": "ngaySinh of the teacher",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "diaChi",
+                        "in": "body",
+                        "description": "diaChi of the teacher",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "soDienThoai",
+                        "in": "body",
+                        "description": "soDienThoai of the teacher",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "body",
+                        "description": "email of the teacher",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/teacher"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/teacher/{id}": {
+            "get": {
+                "tags": ["teacher"],
+                "summary": "Get a teacher by id",
+                "description": "Get a teacher",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of teacher",
+                        "required": true,
+                        "type": "string",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/teacher"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+
+            "put": {
+                "tags": ["teacher"],
+                "summary": "Update a teacher",
+                "description": "Update a teacher",
+                "parameters": [
+                    {
+                        "name": "maGiaoVien",
+                        "in": "body",
+                        "description": "maGiaoVien of the teacher",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tenGiaoVien",
+                        "in": "body",
+                        "description": "tenGiaoVien of the teacher",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ngaySinh",
+                        "in": "body",
+                        "description": "ngaySinh of the teacher",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "diaChi",
+                        "in": "body",
+                        "description": "diaChi of the teacher",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "soDienThoai",
+                        "in": "body",
+                        "description": "soDienThoai of the teacher",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "body",
+                        "description": "email of the teacher",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/teacher"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/teacher/createTeaching": {
+            "post": {
+                "tags": ["teacher"],
+                "summary": "Create a teaching",
+                "description": "Create a teaching",
+                "parameters": [
+                    {
+                        "name": "maGiaoVien",
+                        "in": "body",
+                        "description": "maGiaoVien of the teacher",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "maMonHoc",
+                        "in": "body",
+                        "description": "maMonHoc of the teacher",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "maLop",
+                        "in": "body",
+                        "description": "maLop of the teacher",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "maHocKy",
+                        "in": "body",
+                        "description": "maHocKy of the teacher",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/teaching"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/teacher/{id}/class": {
+            "get": {
+                "tags": ["teacher"],
+                "summary": "Get all class of a teacher teaching",
+                "description": "Get all class of a teacher teaching",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of teacher",
+                        "required": true,
+                        "type": "string",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/subject"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/class": {
+            "get": {
+                "tags": ["class"],
+                "summary": "Get all class",
+                "description": "Get all class",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/class"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["class"],
+                "summary": "Create a class",
+                "description": "Create a class",
+                "parameters": [
+                    {
+                        "name": "maLop",
+                        "in": "body",
+                        "description": "maLop of the class",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tenLop",
+                        "in": "body",
+                        "description": "tenLop of the class",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "nienKhoa",
+                        "in": "body",
+                        "description": "nienKhoa of the class",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/class"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["class"],
+                "summary": "Update a class",
+                "description": "Update a class",
+                "parameters": [
+                    {
+                        "name": "maLop",
+                        "in": "body",
+                        "description": "maLop of the class",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tenLop",
+                        "in": "body",
+                        "description": "tenLop of the class",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "nienKhoa",
+                        "in": "body",
+                        "description": "nienKhoa of the class",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/class"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/class/{id}": {
+            "get": {
+                "tags": ["class"],
+                "summary": "Get a class",
+                "description": "Get a class by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of class",
+                        "required": true,
+                        "type": "string",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/class"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/class/{id}/student": {
+            "get": {
+                "tags": ["class"],
+                "summary": "Get all student of a class",
+                "description": "Get all student of a class",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of class",
+                        "required": true,
+                        "type": "string",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/student"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        }
+    }
+}

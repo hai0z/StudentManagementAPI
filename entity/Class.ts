@@ -4,8 +4,6 @@ import {
     Entity,
     OneToMany,
     BaseEntity,
-    ManyToMany,
-    JoinTable,
     OneToOne,
     JoinColumn,
     ManyToOne,
@@ -37,6 +35,7 @@ export default class Class extends BaseEntity {
 
     @OneToMany(() => Student, (student) => student.lop_maLop, {
         onDelete: "DEFAULT",
+        onUpdate: "SET NULL",
     })
     students: Student[];
 

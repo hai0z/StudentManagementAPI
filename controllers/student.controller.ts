@@ -18,7 +18,12 @@ const studentController = {
             const student = await Student.findOne(req.params.id, {
                 relations: ["lop_maLop"],
             });
-            return res.json(student);
+            //check if student exist
+            if (!student) {
+                return res.status(404).json({ message: "Student not found" });
+            }
+            const { lop_maLop, ...other } = student;
+            return res.json({ user: other, lop_maLop });
         } catch (error) {
             return res.json({ message: error });
         }

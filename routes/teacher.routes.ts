@@ -8,10 +8,10 @@ route.get("/:teacherId", teacherController.getTeacherById);
 route.get("/:teacherId/class", teacherController.getClass);
 
 //post
-route.post("/create", teacherController.createTeacher);
+route.post("/", teacherController.createTeacher);
 route.post("/createTeaching", teacherController.createTeaching);
 
 //put
-route.put("/update/:teacherId", teacherController.updateTeacher);
+route.put("/:teacherId", teacherController.updateTeacher);
 
 export default route;

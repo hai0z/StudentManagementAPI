@@ -13,15 +13,27 @@ import loginRoutes from "./routes/login.routes";
 import markRoutes from "./routes/mark.routes";
 import subjectRoutes from "./routes/subject.routes";
 import statisticalRoutes from "./routes/statistical.routes";
-import Statistical from "./entity/Statistical";
-import Student from "./entity/Student";
-import Class from "./entity/Class";
 
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "./swagger.json";
+import swaggerJsdoc from "swagger-jsdoc";
 dotenv.config();
 
 const app: Application = express();
 const PORT = process.env.PORT || 8080;
+const options = {
+    definition: {
+        openapi: "3.0.0",
+        info: {
+            title: "Hello World",
+            version: "1.0.0",
+        },
+    },
+    apis: ["./routes/*.ts"], // files containing annotations as above
+};
 
+const openapiSpecification = swaggerJsdoc(options);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 const bootstrap = async (): Promise<void> => {
     await createConnection()
         .then(() => console.log("connected to mysql db"))
@@ -33,15 +45,17 @@ const bootstrap = async (): Promise<void> => {
 bootstrap();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(
+    cors({
+        origin: "*",
+        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+        preflightContinue: false,
+        optionsSuccessStatus: 204,
+    })
+);
 
 app.get("/", async (req: Request, res: Response) => {
-    const studentList = await Student.find({
-        where: {
-            lop_maLop: null,
-        },
-    });
-    res.json(studentList);
+    return res.send("is ok");
 });
 
 app.use("/api/student", studentRoutes);

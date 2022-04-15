@@ -18,7 +18,9 @@ export default class Statistical extends BaseEntity {
     @Column({ type: "float", nullable: true })
     diemTrungBinh: number;
 
-    @ManyToOne(() => Student, (student: Student) => student.thongKe_maThongKe)
+    @ManyToOne(() => Student, (student: Student) => student.thongKe_maThongKe, {
+        onDelete: "CASCADE",
+    })
     @JoinColumn({ name: "hocSinh_maHocSinh" })
     maHocSinh: Student;
 

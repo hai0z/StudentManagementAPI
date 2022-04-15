@@ -34,15 +34,11 @@ export default class Class extends BaseEntity {
     gvcn: Teacher;
 
     @OneToMany(() => Student, (student) => student.lop_maLop, {
-        onDelete: "DEFAULT",
-        onUpdate: "SET NULL",
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE",
     })
     students: Student[];
 
     @OneToMany(() => Teaching, (teaching) => teaching.maLop)
     teaching: Teaching[];
-
-    addStudent(student: Student) {
-        this.students.push(student);
-    }
 }

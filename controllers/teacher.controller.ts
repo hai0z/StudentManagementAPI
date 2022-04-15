@@ -112,5 +112,18 @@ const teacherController = {
             return res.json({ message: error });
         }
     },
+    deleteTeacher: async (req: Request, res: Response): Promise<Response> => {
+        const { teacherId } = req.params;
+        try {
+            const teacher = await Teacher.findOne(teacherId);
+            if (teacher) {
+                await Teacher.delete(teacherId);
+                return res.json({ message: "Delete success" });
+            }
+            return res.json({ message: "Không tìm thấy giáo viên" });
+        } catch (error) {
+            return res.json({ message: error });
+        }
+    },
 };
 export default teacherController;

@@ -9,6 +9,18 @@ const semesterController = {
             return res.json({ message: error });
         }
     },
+    getSemesterById: async (req: Request, res: Response): Promise<Response> => {
+        try {
+            const semester = await Semester.findOne(req.params.semesterId);
+            //check if semester exist
+            if (!semester) {
+                return res.status(404).json({ message: "Semester not found" });
+            }
+            return res.json(semester);
+        } catch (error) {
+            return res.json({ message: error });
+        }
+    },
     createSemester: async (req: Request, res: Response): Promise<Response> => {
         const { maHocKi, namHoc, hocKi } = req.body;
         try {
@@ -28,6 +40,19 @@ const semesterController = {
             }
             await semester.save();
             return res.json(semester);
+        } catch (error) {
+            return res.json({ message: error });
+        }
+    },
+    deleteSemester: async (req: Request, res: Response): Promise<Response> => {
+        try {
+            const semester = await Semester.findOne(req.params.semesterId);
+            //check if semester exist
+            if (!semester) {
+                return res.status(404).json({ message: "Semester not found" });
+            }
+            await semester.remove();
+            return res.json({ message: "Semester deleted" });
         } catch (error) {
             return res.json({ message: error });
         }

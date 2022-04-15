@@ -7,5 +7,8 @@ router.get("/", subjectController.getAll);
 route.get("/:id", subjectController.getById);
 
 //put
-router.put("/update/:id", subjectController.update);
+router.put("/:id", subjectController.update);
+
+//delete
+router.delete("/:id", subjectController.delete);
 export default router;

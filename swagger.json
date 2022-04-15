@@ -5,7 +5,7 @@
         "description": "API",
         "version": "1.0.0"
     },
-    "host": "26.154.2.2:8080",
+    "host": "localhost:8080",
     "basePath": "/api",
     "schemes": ["http"],
     "consumes": ["application/json"],
@@ -97,8 +97,7 @@
                         "description": "GioiTinh of the student (true/false) : 0: Nam,1 :Nu",
                         "schema": {
                             "type": "string",
-
-                            "example": 0
+                            "example": "0"
                         }
                     },
                     {
@@ -107,7 +106,8 @@
                         "description": "NgaySinh of the student",
                         "schema": {
                             "type": "string",
-                            "format": "date"
+                            "format": "date",
+                            "example": "2018-01-01"
                         }
                     },
                     {
@@ -211,6 +211,32 @@
                 "tags": ["student"],
                 "summary": "Get a student by id",
                 "description": "Get a student",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of student",
+                        "required": true,
+                        "type": "string",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/student"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["student"],
+                "summary": "Delete a student by id",
+                "description": "Delete a student",
                 "parameters": [
                     {
                         "name": "id",
@@ -388,7 +414,6 @@
                     }
                 }
             },
-
             "put": {
                 "tags": ["teacher"],
                 "summary": "Update a teacher",
@@ -456,6 +481,29 @@
                         "schema": {
                             "$ref": "#/definitions/teacher"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["teacher"],
+                "summary": "Delete a teacher",
+                "description": "Delete a teacher",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of teacher",
+                        "required": true,
+                        "type": "string",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
                     },
                     "400": {
                         "description": "Bad Request"
@@ -614,6 +662,34 @@
                         "description": "Bad Request"
                     }
                 }
+            }
+        },
+        "/class/{id}": {
+            "get": {
+                "tags": ["class"],
+                "summary": "Get a class",
+                "description": "Get a class by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of class",
+                        "required": true,
+                        "type": "string",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/class"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
             },
             "put": {
                 "tags": ["class"],
@@ -622,12 +698,10 @@
                 "parameters": [
                     {
                         "name": "maLop",
-                        "in": "body",
+                        "in": "path",
                         "description": "maLop of the class",
                         "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
+                        "type": "string"
                     },
                     {
                         "name": "tenLop",
@@ -659,21 +733,18 @@
                         "description": "Bad Request"
                     }
                 }
-            }
-        },
-        "/class/{id}": {
-            "get": {
+            },
+            "delete": {
                 "tags": ["class"],
-                "summary": "Get a class",
-                "description": "Get a class by id",
+                "summary": "Delete a class",
+                "description": "Delete a class",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "maLop",
                         "in": "path",
-                        "description": "ID of class",
+                        "description": "maLop of the class",
                         "required": true,
-                        "type": "string",
-                        "format": "int64"
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -712,6 +783,580 @@
                             "items": {
                                 "$ref": "#/definitions/student"
                             }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/login/student": {
+            "post": {
+                "tags": ["login"],
+                "summary": "Login a student",
+                "description": "Login a student",
+                "parameters": [
+                    {
+                        "name": "maHs",
+                        "in": "body",
+                        "description": "ma hoc sinh of the student",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "body",
+                        "description": "password of the student",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/student"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/login/teacher": {
+            "post": {
+                "tags": ["login"],
+                "summary": "Login a teacher",
+                "description": "Login a teacher",
+                "parameters": [
+                    {
+                        "name": "maGiaoVien",
+                        "in": "body",
+                        "description": "ma giao vien of the teacher",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "body",
+                        "description": "password of the teacher",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/teacher"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/login/admin": {
+            "post": {
+                "tags": ["login"],
+                "summary": "Login an admin",
+                "description": "Login an admin",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "body",
+                        "description": "username of the admin",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "body",
+                        "description": "password of the admin",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/admin"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/subject": {
+            "get": {
+                "tags": ["subject"],
+                "summary": "Get all subject",
+                "description": "Get all subject",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/subject"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["subject"],
+                "summary": "Create a subject",
+                "description": "Create a subject",
+                "parameters": [
+                    {
+                        "name": "maMonHoc",
+                        "in": "body",
+                        "description": "ma mon hoc of the subject",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tenMonHoc",
+                        "in": "body",
+                        "description": "ten mon hoc of the subject",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/subject"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/subject/{id}": {
+            "put": {
+                "tags": ["subject"],
+                "summary": "Update a subject",
+                "description": "Update a subject",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of subject",
+                        "required": true,
+                        "type": "string",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "maMonHoc",
+                        "in": "body",
+                        "description": "ma mon hoc of the subject",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tenMonHoc",
+                        "in": "body",
+                        "description": "ten mon hoc of the subject",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/subject"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["subject"],
+                "summary": "Delete a subject",
+                "description": "Delete a subject",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of subject",
+                        "required": true,
+                        "type": "string",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/subject"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/semester": {
+            "get": {
+                "tags": ["semester"],
+                "summary": "Get all semester",
+                "description": "Get all semester",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/semester"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["semester"],
+                "summary": "Create a semester",
+                "description": "Create a semester",
+                "parameters": [
+                    {
+                        "name": "maHocKi",
+                        "in": "body",
+                        "description": "ma hoc ky of the semester",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "1(2021-2022)"
+                        }
+                    },
+                    {
+                        "name": "hocKi",
+                        "in": "body",
+                        "description": "ten hoc ky of the semester",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "namHoc",
+                        "in": "body",
+                        "description": "nam hoc of the semester",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "2019-2020"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/semester"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/semester/{id}": {
+            "get": {
+                "tags": ["semester"],
+                "summary": "Get a semester",
+                "description": "Get a semester",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id of the semester",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/semester"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["semester"],
+                "summary": "Update a semester",
+                "description": "Update a semester",
+                "parameters": [
+                    {
+                        "name": "maHocKi",
+                        "in": "body",
+                        "description": "ma hoc ky of the semester",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "1(2021-2022)"
+                        }
+                    },
+                    {
+                        "name": "hocKi",
+                        "in": "body",
+                        "description": "ten hoc ky of the semester",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "namHoc",
+                        "in": "body",
+                        "description": "nam hoc of the semester",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "2019-2020"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/semester"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["semester"],
+                "summary": "Delete a semester",
+                "description": "Delete a semester",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id of the semester",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/semester"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/mark": {
+            "get": {
+                "tags": ["mark"],
+                "summary": "Get all mark",
+                "description": "Get all mark",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/mark"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["mark"],
+                "summary": "Create a mark",
+                "description": "Create a mark",
+                "parameters": [
+                    {
+                        "name": "maHocSinh",
+                        "in": "body",
+                        "description": "ma hoc sinh of the mark",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "maMonHoc",
+                        "in": "body",
+                        "description": "ma mon hoc of the mark",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/mark"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/mark/{id}": {
+            "get": {
+                "tags": ["mark"],
+                "summary": "Get a mark",
+                "description": "Get a mark",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id of the mark",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/mark"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["mark"],
+                "summary": "Update a mark",
+                "description": "Update a mark",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id of the mark",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "diem",
+                        "in": "body",
+                        "description": "diem of the mark",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "1(2021-2022)"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/mark"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/mark/{subjectId}/{classId}/{semesterId}": {
+            "get": {
+                "tags": ["mark"],
+                "summary": "Lấy điểm của 1 lớp theo môn học và học kỳ",
+                "description": "Lấy điểm 1 lớp theo môn học và học kỳ",
+                "parameters": [
+                    {
+                        "name": "subjectId",
+                        "in": "path",
+                        "description": "id of the subject",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "classId",
+                        "in": "path",
+                        "description": "id of the class",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "semesterId",
+                        "in": "path",
+                        "description": "id of the semester",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/mark"
                         }
                     },
                     "400": {

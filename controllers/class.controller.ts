@@ -75,5 +75,18 @@ const classController = {
             return res.json({ message: error.message });
         }
     },
+    deleteClass: async (req: Request, res: Response) => {
+        const { classId } = req.params;
+        try {
+            const class_ = await Class.findOne(classId);
+            if (!class_) {
+                return res.status(404).json({ message: "Class not found" });
+            }
+            await class_.remove();
+            return res.json({ message: "Delete class successfully" });
+        } catch (error) {
+            return res.json({ message: error });
+        }
+    },
 };
 export default classController;

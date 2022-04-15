@@ -49,14 +49,8 @@ app.use(
     cors({
         origin: "*",
         methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-        preflightContinue: false,
-        optionsSuccessStatus: 204,
     })
 );
-
-app.get("/", async (req: Request, res: Response) => {
-    return res.send("is ok");
-});
 
 app.use("/api/student", studentRoutes);
 app.use("/api/class", classRoutes);

@@ -147,5 +147,18 @@ const studentController = {
             return res.json({ message: error });
         }
     },
+    deleteStudent: async (req: Request, res: Response) => {
+        const { id } = req.params;
+        try {
+            const student = await Student.findOne(id);
+            if (student) {
+                await Student.delete(id);
+                return res.status(200).json({ success: true });
+            }
+            return res.status(404).json({ message: "Không tìm thấy học sinh" });
+        } catch (error) {
+            return res.json({ message: error });
+        }
+    },
 };
 export default studentController;

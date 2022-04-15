@@ -14,4 +14,6 @@ route.post("/createTeaching", teacherController.createTeaching);
 //put
 route.put("/:teacherId", teacherController.updateTeacher);
 
+//delete
+route.delete("/:teacherId", teacherController.deleteTeacher);
 export default route;

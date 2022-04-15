@@ -2,6 +2,14 @@ import { Request, Response } from "express";
 import Mark from "../entity/Mark";
 import Student from "../entity/Student";
 const markController = {
+    getAllMark: async (_: Request, res: Response) => {
+        try {
+            const marks = await Mark.find();
+            return res.json(marks);
+        } catch (error) {
+            return res.json({ message: error });
+        }
+    },
     getSingleMark: async (req: Request, res: Response): Promise<Response> => {
         const { maDiem } = req.params;
         try {
@@ -88,6 +96,32 @@ const markController = {
             }
         } catch (error) {
             return res.json({ message: error });
+        }
+    },
+    updateMultipleMark: async (
+        req: Request,
+        res: Response
+    ): Promise<Response> => {
+        try {
+            let { markArr } = req.body;
+            console.log(markArr);
+            markArr = markArr?.forEach(async (mark: Mark) => {
+                const newMark = new Mark();
+                newMark.maDiem = mark.maDiem;
+                newMark.diemHeSo1 = mark.diemHeSo1;
+                newMark.diemHeSo1_2 = mark.diemHeSo1_2;
+                newMark.diemHeSo1_3 = mark.diemHeSo1_3;
+                newMark.diemHeSo1_4 = mark.diemHeSo1_4;
+                newMark.diemHeSo2 = mark.diemHeSo2;
+                newMark.diemHeSo2_2 = mark.diemHeSo2_2;
+                newMark.diemHeSo2_3 = mark.diemHeSo2_3;
+                newMark.diemHeSo3 = mark.diemHeSo3;
+                await newMark.save();
+                return newMark;
+            });
+            return res.json(markArr);
+        } catch (error: any) {
+            return res.json({ message: error.message });
         }
     },
 };

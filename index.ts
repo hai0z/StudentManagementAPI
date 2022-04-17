@@ -16,24 +16,16 @@ import statisticalRoutes from "./routes/statistical.routes";
 
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "./swagger.json";
-import swaggerJsdoc from "swagger-jsdoc";
+import Student from "./entity/Student";
+import Subject from "./entity/Subject";
+import Mark from "./entity/Mark";
 dotenv.config();
 
 const app: Application = express();
 const PORT = process.env.PORT || 8080;
-const options = {
-    definition: {
-        openapi: "3.0.0",
-        info: {
-            title: "Hello World",
-            version: "1.0.0",
-        },
-    },
-    apis: ["./routes/*.ts"], // files containing annotations as above
-};
 
-const openapiSpecification = swaggerJsdoc(options);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 const bootstrap = async (): Promise<void> => {
     await createConnection()
         .then(() => console.log("connected to mysql db"))
@@ -51,7 +43,16 @@ app.use(
         methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     })
 );
-
+app.get("/", async (req: Request, res: Response) => {
+    const allMarks = await Mark.find();
+    allMarks.forEach(async (element) => {
+        const mark = new Mark();
+        mark.maDiem = element.maDiem;
+        mark.trungBinhMon = +(Math.random() * 3 + 10 - 3).toFixed(1);
+        await mark.save();
+    });
+    return res.json({ message: "hello" });
+});
 app.use("/api/student", studentRoutes);
 app.use("/api/class", classRoutes);
 app.use("/api/teacher", teacherRoutes);

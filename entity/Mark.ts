@@ -45,7 +45,9 @@ export default class Mark extends BaseEntity {
     @JoinColumn({ name: "maHs" })
     student: Student;
 
-    @ManyToOne(() => Subject, (suject) => suject.mark)
+    @ManyToOne(() => Subject, (suject) => suject.mark, {
+        onUpdate: "CASCADE",
+    })
     @JoinColumn({ name: "monHoc_maMonHoc" })
     monHoc_maMonHoc: Subject;
 

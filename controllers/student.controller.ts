@@ -73,7 +73,7 @@ const studentController = {
                 return acc + mark.trungBinhMon;
             }, 0);
 
-            const diemTongKet = (tongDiem / studentMark.length).toFixed(2);
+            const diemTongKet = (tongDiem / studentMark.length).toFixed(1);
 
             return res.json({ ...other, diemTongKet });
         } catch (error) {

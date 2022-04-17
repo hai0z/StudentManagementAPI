@@ -12,6 +12,7 @@ export default class Subject extends BaseEntity {
 
     @OneToMany(() => Mark, (mark) => mark.monHoc_maMonHoc, {
         onDelete: "CASCADE",
+        onUpdate: "CASCADE",
     })
     mark: Mark[];
 

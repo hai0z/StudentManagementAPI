@@ -10,4 +10,5 @@ route.post("/", semesterController.createSemester);
 
 //delete
 route.delete("/:semesterId", semesterController.deleteSemester);
+
 export default route;

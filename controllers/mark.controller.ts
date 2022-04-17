@@ -90,7 +90,7 @@ const markController = {
                     diemHeSo2_3: newMark.diemHeSo2_3,
                     diemHeSo3: newMark.diemHeSo3,
                 });
-                return res.json({ success: true, data: newMark });
+                return res.json({ success: true });
             } else {
                 return res.json({ message: "Không tìm thấy điểm" });
             }
@@ -104,8 +104,7 @@ const markController = {
     ): Promise<Response> => {
         try {
             let { markArr } = req.body;
-            console.log(markArr);
-            markArr = markArr?.forEach(async (mark: Mark) => {
+            markArr?.forEach(async (mark: Mark) => {
                 const newMark = new Mark();
                 newMark.maDiem = mark.maDiem;
                 newMark.diemHeSo1 = mark.diemHeSo1;
@@ -117,7 +116,6 @@ const markController = {
                 newMark.diemHeSo2_3 = mark.diemHeSo2_3;
                 newMark.diemHeSo3 = mark.diemHeSo3;
                 await newMark.save();
-                return newMark;
             });
             return res.json(markArr);
         } catch (error: any) {

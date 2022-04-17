@@ -4,6 +4,7 @@ const route: Router = Router();
 
 //get
 route.get("/", statisticalController.getAll);
-route.get("/:studentId", statisticalController.getByStudentId);
+route.get("/student/:studentId", statisticalController.getByStudentId);
+route.get("/class/:classId/:semesterId", statisticalController.getByClassId);
 
 export default route;

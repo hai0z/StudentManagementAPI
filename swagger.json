@@ -1364,6 +1364,38 @@
                     }
                 }
             }
+        },
+        "/mark/multiUpdate": {
+            "put": {
+                "tags": ["mark"],
+                "summary": "Cập nhật điểm của nhiều học sinh",
+                "description": "Cập nhật điểm của nhiều học sinh",
+                "parameters": [
+                    {
+                        "name": "markArr",
+                        "in": "body",
+                        "description": "data of the mark",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/mark"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/mark"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
         }
     }
 }

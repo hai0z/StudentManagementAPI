@@ -6,6 +6,7 @@ import {
     BaseEntity,
     ManyToOne,
     BeforeUpdate,
+    AfterLoad,
 } from "typeorm";
 import Semester from "./Semester";
 import Student from "./Student";
@@ -36,7 +37,7 @@ export default class Mark extends BaseEntity {
     diemHeSo3: number;
 
     @Column({ type: "float", nullable: true })
-    trungBinhMon: number;
+    trungBinhMon: number | any;
 
     @ManyToOne(() => Student, (student) => student.marks, {
         onDelete: "CASCADE",
@@ -101,6 +102,16 @@ export default class Mark extends BaseEntity {
             }
             let average = +(sum / totalElements).toFixed(1);
             this.trungBinhMon = average;
+        }
+    }
+    @AfterLoad()
+    resetDTB() {
+        if (
+            this.diemHeSo3 == null ||
+            this.diemHeSo3 == undefined ||
+            this.diemHeSo3 == 0
+        ) {
+            this.trungBinhMon = null;
         }
     }
 }

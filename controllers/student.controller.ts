@@ -41,11 +41,18 @@ const studentController = {
 
             const { marks, ...other } = student as Student;
 
-            const studentMark = allMarks.filter((mark) => {
-                return student?.marks
-                    .map((mark) => mark.maDiem)
-                    .includes(mark.maDiem);
-            });
+            const studentMark = allMarks
+                .filter((mark) => {
+                    return student?.marks
+                        .map((mark) => mark.maDiem)
+                        .includes(mark.maDiem);
+                })
+                .sort((a, b) => {
+                    return (
+                        +a.monHoc_maMonHoc.maMonHoc -
+                        +b.monHoc_maMonHoc.maMonHoc
+                    );
+                });
             return res.json({ ...other, studentMark });
         } catch (error) {
             return res.json({ message: error });
@@ -126,25 +133,36 @@ const studentController = {
     },
     updateStudent: async (req: Request, res: Response) => {
         const { id } = req.params;
-        const { maHs, hoTen, ngaySinh, gioiTinh, lop_maLop, queQuan, diaChi } =
+        const { maHs, hoTen, ngaySinh, gioiTinh, maLop, queQuan, diaChi } =
             req.body;
         try {
-            const student = await Student.findOne(id);
+            const student = await Student.findOne(id, {
+                relations: ["lop_maLop"],
+            });
             if (student) {
-                await Student.update(id, {
-                    maHs: maHs ?? student.maHs,
-                    hoTen: hoTen ?? student.hoTen,
-                    ngaySinh: ngaySinh ?? student.ngaySinh,
-                    gioiTinh: gioiTinh ?? student.gioiTinh,
-                    queQuan: queQuan ?? student.queQuan,
-                    diaChi: diaChi ?? student.diaChi,
-                    lop_maLop: lop_maLop ?? student.lop_maLop.maLop,
-                });
-                return res.json(student);
+                try {
+                    await Student.update(id, {
+                        maHs: maHs ?? student.maHs,
+                        hoTen: hoTen ?? student.hoTen,
+                        ngaySinh: ngaySinh ?? student.ngaySinh,
+                        gioiTinh: gioiTinh ?? student.gioiTinh,
+                        queQuan: queQuan ?? student.queQuan,
+                        diaChi: diaChi ?? student.diaChi,
+                        lop_maLop: maLop ?? student.lop_maLop.maLop,
+                    });
+                    const studentAfterUpdate = await Student.findOne(id, {
+                        relations: ["lop_maLop"],
+                    });
+                    const { lop_maLop, ...other } =
+                        studentAfterUpdate as Student;
+                    return res.json({ user: other, lop_maLop });
+                } catch (error: any) {
+                    return res.status(500).json({ message: error.message });
+                }
             }
-            return res.json({ message: "Không tìm thấy học sinh" });
-        } catch (error) {
-            return res.json({ message: error });
+            return res.status(404).json({ message: "Không tìm thấy học sinh" });
+        } catch (error: any) {
+            return res.json({ message: error.message });
         }
     },
     deleteStudent: async (req: Request, res: Response) => {

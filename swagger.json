@@ -5,7 +5,7 @@
         "description": "API",
         "version": "1.0.0"
     },
-    "host": "localhost:8080",
+    "host": "26.154.2.2:8080",
     "basePath": "/api",
     "schemes": ["http"],
     "consumes": ["application/json"],
@@ -138,33 +138,6 @@
                         "description": "Bad Request"
                     }
                 }
-            },
-            "put": {
-                "tags": ["student"],
-                "summary": "Update a student",
-                "description": "Update a student",
-                "parameters": [
-                    {
-                        "name": "student",
-                        "in": "body",
-                        "description": "Student object that needs to be updated in the store",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/student"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/student"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    }
-                }
             }
         },
         "/student/{id}/marks/{semesterId}": {
@@ -223,6 +196,33 @@
                 ],
                 "responses": {
                     "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/student"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["student"],
+                "summary": "Update a student",
+                "description": "Update a student",
+                "parameters": [
+                    {
+                        "name": "student",
+                        "in": "body",
+                        "description": "Student object that needs to be updated in the store",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/student"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
                         "description": "Success",
                         "schema": {
                             "$ref": "#/definitions/student"

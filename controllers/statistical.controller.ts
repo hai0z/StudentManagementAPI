@@ -65,7 +65,7 @@ const statisticalController = {
                     tongDiem += element.trungBinhMon;
                 });
                 tongDiem = +(tongDiem / mark.length).toFixed(1);
-
+                if (tongDiem === 0) return;
                 const Gioi = mark.filter((x) => x.trungBinhMon >= 6.5);
                 const Kha = mark.filter((x) => x.trungBinhMon >= 5);
                 const TrungBinh = mark.filter((x) => x.trungBinhMon >= 3.5);
@@ -95,19 +95,22 @@ const statisticalController = {
                 }
                 return "Yếu";
             };
-
+            const tk = (
+                mark.reduce((acc, mark) => {
+                    return acc + mark.trungBinhMon;
+                }, 0) / mark.length
+            ).toFixed(1);
             return {
                 ...other,
                 marks: mark.map((mark) => ({
                     maMonHoc: +mark.monHoc_maMonHoc.maMonHoc,
                     tenMonHoc: mark.monHoc_maMonHoc.tenMonHoc,
-                    diemTongKet: mark.trungBinhMon,
+                    diemTongKet:
+                        mark.trungBinhMon == 0
+                            ? "Chưa có điểm"
+                            : mark.trungBinhMon,
                 })),
-                tongKet: (
-                    mark.reduce((acc, mark) => {
-                        return acc + mark.trungBinhMon;
-                    }, 0) / mark.length
-                ).toFixed(1),
+                tongKet: +tk == 0.0 ? "Chưa có điểm" : tk,
                 xepLoai: xepLoai(),
             };
         });
@@ -148,6 +151,266 @@ const statisticalController = {
                 yeuPercent: yeuPercent(),
             },
         });
+    },
+    getByClassIdAndNamHoc: async (req: Request, res: Response) => {
+        const student = await Student.find({
+            relations: ["marks"],
+            where: {
+                lop_maLop: req.params.classId,
+            },
+        });
+
+        const allMarks = await Mark.find({
+            relations: ["monHoc_maMonHoc", "hocKi_maHocKi"],
+            where: {
+                hocKi_maHocKi: {
+                    namHoc: req.params.namHoc,
+                },
+            },
+        });
+        const studentMark = student.map((student) => {
+            let mark = allMarks.filter((mark) =>
+                student.marks.map((mark) => mark.maDiem).includes(mark.maDiem)
+            );
+
+            mark.sort((a, b) => {
+                return (
+                    +a.monHoc_maMonHoc.maMonHoc - +b.monHoc_maMonHoc.maMonHoc
+                );
+            });
+            const { marks, ...other } = student as Student;
+            const HK1 = (
+                mark
+                    .filter((x) => x.hocKi_maHocKi.hocKi == 1)
+                    .reduce((acc, mark) => {
+                        return acc + mark.trungBinhMon;
+                    }, 0) /
+                mark.filter((x) => x.hocKi_maHocKi.hocKi == 1).length
+            ).toFixed(1);
+            const HK2 = (
+                mark
+                    .filter((x) => x.hocKi_maHocKi.hocKi == 2)
+                    .reduce((acc, mark) => {
+                        return acc + mark.trungBinhMon;
+                    }, 0) /
+                mark.filter((x) => x.hocKi_maHocKi.hocKi == 2).length
+            ).toFixed(1);
+
+            return {
+                ...other,
+                marks: mark.map((marks, index) => {
+                    if (
+                        +marks.monHoc_maMonHoc.maMonHoc == 1 &&
+                        marks.hocKi_maHocKi.hocKi == 1
+                    ) {
+                        let hk1 = marks.trungBinhMon;
+                        let hk2 = mark[index + 1].trungBinhMon;
+                        let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
+                        return {
+                            maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
+                            tenMonHoc: marks.monHoc_maMonHoc.tenMonHoc,
+                            diemTongKet: tongDiem,
+                        };
+                    }
+                    if (
+                        +marks.monHoc_maMonHoc.maMonHoc == 2 &&
+                        marks.hocKi_maHocKi.hocKi == 1
+                    ) {
+                        let hk1 = marks.trungBinhMon;
+                        let hk2 = mark[index + 1].trungBinhMon;
+                        let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
+                        return {
+                            maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
+                            tenMonHoc: marks.monHoc_maMonHoc.tenMonHoc,
+                            diemTongKet: tongDiem,
+                        };
+                    }
+                    if (
+                        +marks.monHoc_maMonHoc.maMonHoc == 3 &&
+                        marks.hocKi_maHocKi.hocKi == 1
+                    ) {
+                        let hk1 = marks.trungBinhMon;
+                        let hk2 = mark[index + 1].trungBinhMon;
+                        let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1) || 0;
+                        return {
+                            maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
+                            tenMonHoc: marks.monHoc_maMonHoc.tenMonHoc,
+                            diemTongKet: tongDiem,
+                        };
+                    }
+                    if (
+                        +marks.monHoc_maMonHoc.maMonHoc == 4 &&
+                        marks.hocKi_maHocKi.hocKi == 1
+                    ) {
+                        let hk1 = marks.trungBinhMon;
+                        let hk2 = mark[index + 1].trungBinhMon;
+                        let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
+                        return {
+                            maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
+                            tenMonHoc: marks.monHoc_maMonHoc.tenMonHoc,
+                            diemTongKet: tongDiem,
+                        };
+                    }
+                    if (
+                        +marks.monHoc_maMonHoc.maMonHoc == 5 &&
+                        marks.hocKi_maHocKi.hocKi == 1
+                    ) {
+                        let hk1 = marks.trungBinhMon;
+                        let hk2 = mark[index + 1].trungBinhMon;
+                        let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
+                        return {
+                            maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
+                            tenMonHoc: marks.monHoc_maMonHoc.tenMonHoc,
+                            diemTongKet: tongDiem,
+                        };
+                    }
+                    if (
+                        +marks.monHoc_maMonHoc.maMonHoc == 6 &&
+                        marks.hocKi_maHocKi.hocKi == 1
+                    ) {
+                        let hk1 = marks.trungBinhMon;
+                        let hk2 = mark[index + 1].trungBinhMon;
+                        let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
+                        return {
+                            maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
+                            tenMonHoc: marks.monHoc_maMonHoc.tenMonHoc,
+                            diemTongKet: tongDiem,
+                        };
+                    }
+                    if (
+                        +marks.monHoc_maMonHoc.maMonHoc == 7 &&
+                        marks.hocKi_maHocKi.hocKi == 1
+                    ) {
+                        let hk1 = marks.trungBinhMon;
+                        let hk2 = mark[index + 1].trungBinhMon;
+                        let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
+                        return {
+                            maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
+                            tenMonHoc: marks.monHoc_maMonHoc.tenMonHoc,
+                            diemTongKet: tongDiem,
+                        };
+                    }
+                    if (
+                        +marks.monHoc_maMonHoc.maMonHoc == 8 &&
+                        marks.hocKi_maHocKi.hocKi == 1
+                    ) {
+                        let hk1 = marks.trungBinhMon;
+                        let hk2 = mark[index + 1].trungBinhMon;
+                        let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
+                        return {
+                            maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
+                            tenMonHoc: marks.monHoc_maMonHoc.tenMonHoc,
+                            diemTongKet: tongDiem,
+                        };
+                    }
+                    if (
+                        +marks.monHoc_maMonHoc.maMonHoc == 9 &&
+                        marks.hocKi_maHocKi.hocKi == 1
+                    ) {
+                        let hk1 = marks.trungBinhMon;
+                        let hk2 = mark[index + 1].trungBinhMon;
+                        let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
+                        return {
+                            maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
+                            tenMonHoc: marks.monHoc_maMonHoc.tenMonHoc,
+                            diemTongKet: tongDiem,
+                        };
+                    }
+                    if (
+                        +marks.monHoc_maMonHoc.maMonHoc == 10 &&
+                        marks.hocKi_maHocKi.hocKi == 1
+                    ) {
+                        let hk1 = marks.trungBinhMon;
+                        let hk2 = mark[index + 1].trungBinhMon;
+                        let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
+                        return {
+                            maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
+                            tenMonHoc: marks.monHoc_maMonHoc.tenMonHoc,
+                            diemTongKet: tongDiem,
+                        };
+                    }
+                    if (
+                        +marks.monHoc_maMonHoc.maMonHoc == 11 &&
+                        marks.hocKi_maHocKi.hocKi == 1
+                    ) {
+                        let hk1 = marks.trungBinhMon;
+                        let hk2 = mark[index + 1].trungBinhMon;
+                        let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
+                        return {
+                            maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
+                            tenMonHoc: marks.monHoc_maMonHoc.tenMonHoc,
+                            diemTongKet: tongDiem ?? 0,
+                        };
+                    }
+                    if (
+                        +marks.monHoc_maMonHoc.maMonHoc == 12 &&
+                        marks.hocKi_maHocKi.hocKi == 1
+                    ) {
+                        let hk1 = marks.trungBinhMon;
+                        let hk2 = mark[index + 1].trungBinhMon;
+                        let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
+                        return {
+                            maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
+                            tenMonHoc: marks.monHoc_maMonHoc.tenMonHoc,
+                            diemTongKet: tongDiem,
+                        };
+                    }
+                }),
+                tongKet: {
+                    HK1,
+                    HK2,
+                    ALL: ((+HK1 + +HK2 * 2) / 3).toFixed(1),
+                },
+            };
+        });
+        const cn = studentMark.map((student) => {
+            const { marks, ...other } = student;
+            let diem = marks
+                .map((marks) => {
+                    return marks != null
+                        ? marks
+                        : {
+                              maMonHoc: 0,
+                              tenMonHoc: "",
+                              diemTongKet: 0,
+                          };
+                })
+                .filter((marks) => marks.diemTongKet != 0);
+            const xepLoai = () => {
+                const Gioi = diem.filter((x) => x.diemTongKet >= 6.5);
+                const Kha = diem.filter((x) => x.diemTongKet >= 5);
+                const TrungBinh = diem.filter((x) => x.diemTongKet >= 3.5);
+                if (
+                    (diem[10].diemTongKet >= 8 || diem[11].diemTongKet >= 8) &&
+                    +student.tongKet.ALL >= 8 &&
+                    Gioi.length == diem.length
+                ) {
+                    return "Giỏi";
+                }
+                if (
+                    (diem[10].diemTongKet >= 6.5 ||
+                        diem[11].diemTongKet >= 6.5) &&
+                    +student.tongKet.ALL >= 6.5 &&
+                    Kha.length == diem.length
+                ) {
+                    return "Khá";
+                }
+                if (
+                    (diem[10]!.diemTongKet >= 5 || diem[11].diemTongKet >= 5) &&
+                    +student.tongKet.ALL >= 5 &&
+                    TrungBinh.length == diem.length
+                ) {
+                    return "Trung bình";
+                }
+                return "Yếu";
+            };
+            return {
+                ...other,
+                xepLoai: xepLoai(),
+            };
+        });
+
+        return res.json(cn);
     },
 };
 

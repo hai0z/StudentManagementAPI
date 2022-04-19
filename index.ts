@@ -16,9 +16,9 @@ import statisticalRoutes from "./routes/statistical.routes";
 
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "./swagger.json";
-import Student from "./entity/Student";
-import Subject from "./entity/Subject";
 import Mark from "./entity/Mark";
+import Student from "./entity/Student";
+
 dotenv.config();
 
 const app: Application = express();
@@ -44,13 +44,29 @@ app.use(
     })
 );
 app.get("/", async (req: Request, res: Response) => {
-    const allMarks = await Mark.find();
-    allMarks.forEach(async (element) => {
-        const mark = new Mark();
-        mark.maDiem = element.maDiem;
-        mark.trungBinhMon = +(Math.random() * 3 + 10 - 3).toFixed(1);
-        await mark.save();
-    });
+    // const mark = await Mark.find();
+    // mark.forEach(async (element) => {
+    //     const mark = new Mark();
+    //     mark.maDiem = element.maDiem;
+    //     mark.diemHeSo1 = Math.floor(Math.random() * 5 + 5);
+    //     mark.diemHeSo1_2 = Math.floor(Math.random() * 5 + 5);
+    //     mark.diemHeSo2 = Math.floor(Math.random() * 5 + 5);
+    //     mark.diemHeSo2_2 = Math.floor(Math.random() * 5 + 5);
+    //     mark.diemHeSo3 = Math.floor(Math.random() * 5 + 5);
+    //     await mark.save();
+    // });
+    // const student = await Student.find();
+    // student.forEach(async (element) => {
+    //     if (!element.gioiTinh) {
+    //         Student.update(element.maHs, {
+    //             img: "https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg",
+    //         });
+    //     } else {
+    //         Student.update(element.maHs, {
+    //             img: "https://static.vecteezy.com/system/resources/previews/004/773/704/large_2x/a-girl-s-face-with-a-beautiful-smile-a-female-avatar-for-a-website-and-social-network-vector.jpg",
+    //         });
+    //     }
+    // });
     return res.json({ message: "hello" });
 });
 app.use("/api/student", studentRoutes);

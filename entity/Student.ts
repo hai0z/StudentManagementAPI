@@ -8,6 +8,7 @@ import {
     OneToOne,
     OneToMany,
     BeforeInsert,
+    AfterInsert,
 } from "typeorm";
 
 import Class from "./Class";
@@ -69,6 +70,20 @@ export default class Student extends BaseEntity {
             studentAccount.password = "1111";
             await studentAccount.save();
             this.studentAccount = studentAccount;
+        } catch (error: any) {
+            console.log(error.message);
+        }
+    }
+    @AfterInsert()
+    async addAvatar() {
+        try {
+            if (this.gioiTinh) {
+                this.img =
+                    "https://static.vecteezy.com/system/resources/previews/004/773/704/large_2x/a-girl-s-face-with-a-beautiful-smile-a-female-avatar-for-a-website-and-social-network-vector.jpg";
+            } else {
+                this.img =
+                    "https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg";
+            }
         } catch (error: any) {
             console.log(error.message);
         }

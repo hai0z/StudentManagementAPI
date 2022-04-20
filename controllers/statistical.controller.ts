@@ -235,7 +235,7 @@ const statisticalController = {
                         marks.hocKi_maHocKi.hocKi == 1
                     ) {
                         let hk1 = marks.trungBinhMon;
-                        let hk2 = mark[index + 1].trungBinhMon;
+                        let hk2 = mark[index + 1]?.trungBinhMon;
                         let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
                         return {
                             maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
@@ -248,12 +248,12 @@ const statisticalController = {
                         marks.hocKi_maHocKi.hocKi == 1
                     ) {
                         let hk1 = marks.trungBinhMon;
-                        let hk2 = mark[index + 1].trungBinhMon;
+                        let hk2 = mark[index + 1]?.trungBinhMon;
                         let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
                         return {
                             maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
                             tenMonHoc: marks.monHoc_maMonHoc.tenMonHoc,
-                            diemTongKet: tongDiem,
+                            diemTongKet: tongDiem ?? "Chưa có điểm",
                         };
                     }
                     if (
@@ -261,7 +261,7 @@ const statisticalController = {
                         marks.hocKi_maHocKi.hocKi == 1
                     ) {
                         let hk1 = marks.trungBinhMon;
-                        let hk2 = mark[index + 1].trungBinhMon;
+                        let hk2 = mark[index + 1]?.trungBinhMon;
                         let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1) || 0;
                         return {
                             maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
@@ -274,7 +274,7 @@ const statisticalController = {
                         marks.hocKi_maHocKi.hocKi == 1
                     ) {
                         let hk1 = marks.trungBinhMon;
-                        let hk2 = mark[index + 1].trungBinhMon;
+                        let hk2 = mark[index + 1]?.trungBinhMon;
                         let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
                         return {
                             maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
@@ -287,7 +287,7 @@ const statisticalController = {
                         marks.hocKi_maHocKi.hocKi == 1
                     ) {
                         let hk1 = marks.trungBinhMon;
-                        let hk2 = mark[index + 1].trungBinhMon;
+                        let hk2 = mark[index + 1]?.trungBinhMon;
                         let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
                         return {
                             maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
@@ -300,7 +300,7 @@ const statisticalController = {
                         marks.hocKi_maHocKi.hocKi == 1
                     ) {
                         let hk1 = marks.trungBinhMon;
-                        let hk2 = mark[index + 1].trungBinhMon;
+                        let hk2 = mark[index + 1]?.trungBinhMon;
                         let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
                         return {
                             maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
@@ -313,7 +313,7 @@ const statisticalController = {
                         marks.hocKi_maHocKi.hocKi == 1
                     ) {
                         let hk1 = marks.trungBinhMon;
-                        let hk2 = mark[index + 1].trungBinhMon;
+                        let hk2 = mark[index + 1]?.trungBinhMon;
                         let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
                         return {
                             maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
@@ -326,7 +326,7 @@ const statisticalController = {
                         marks.hocKi_maHocKi.hocKi == 1
                     ) {
                         let hk1 = marks.trungBinhMon;
-                        let hk2 = mark[index + 1].trungBinhMon;
+                        let hk2 = mark[index + 1]?.trungBinhMon;
                         let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
                         return {
                             maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
@@ -339,7 +339,7 @@ const statisticalController = {
                         marks.hocKi_maHocKi.hocKi == 1
                     ) {
                         let hk1 = marks.trungBinhMon;
-                        let hk2 = mark[index + 1].trungBinhMon;
+                        let hk2 = mark[index + 1]?.trungBinhMon;
                         let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
                         return {
                             maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
@@ -352,7 +352,7 @@ const statisticalController = {
                         marks.hocKi_maHocKi.hocKi == 1
                     ) {
                         let hk1 = marks.trungBinhMon;
-                        let hk2 = mark[index + 1].trungBinhMon;
+                        let hk2 = mark[index + 1]?.trungBinhMon;
                         let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
                         return {
                             maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
@@ -365,7 +365,7 @@ const statisticalController = {
                         marks.hocKi_maHocKi.hocKi == 1
                     ) {
                         let hk1 = marks.trungBinhMon;
-                        let hk2 = mark[index + 1].trungBinhMon;
+                        let hk2 = mark[index + 1]?.trungBinhMon;
                         let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
                         return {
                             maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
@@ -378,7 +378,7 @@ const statisticalController = {
                         marks.hocKi_maHocKi.hocKi == 1
                     ) {
                         let hk1 = marks.trungBinhMon;
-                        let hk2 = mark[index + 1].trungBinhMon;
+                        let hk2 = mark[index + 1]?.trungBinhMon;
                         let tongDiem = +((+hk1 + +hk2 * 2) / 3).toFixed(1);
                         return {
                             maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
@@ -440,8 +440,39 @@ const statisticalController = {
                 xepLoai: xepLoai(),
             };
         });
-
-        return res.json(cn);
+        const gioiPercent = () => {
+            let tongSoHocSinh = cn.length;
+            let tongSoHocSinhGioi = cn.filter(
+                (x) => x.xepLoai == "Giỏi"
+            ).length;
+            return ((tongSoHocSinhGioi / tongSoHocSinh) * 100).toFixed(1);
+        };
+        const khaPercent = () => {
+            let tongSoHocSinh = cn.length;
+            let tongSoHocSinhKha = cn.filter((x) => x.xepLoai == "Khá").length;
+            return ((tongSoHocSinhKha / tongSoHocSinh) * 100).toFixed(1);
+        };
+        const trungBinhPercent = () => {
+            let tongSoHocSinh = cn.length;
+            let tongSoHocSinhTrungBinh = cn.filter(
+                (x) => x.xepLoai == "Trung bình"
+            ).length;
+            return ((tongSoHocSinhTrungBinh / tongSoHocSinh) * 100).toFixed(1);
+        };
+        const yeuPercent = () => {
+            let tongSoHocSinh = cn.length;
+            let tongSoHocSinhYeu = cn.filter((x) => x.xepLoai == "Yếu").length;
+            return ((tongSoHocSinhYeu / tongSoHocSinh) * 100).toFixed(1);
+        };
+        return res.json({
+            cn,
+            percent: {
+                gioiPercent: gioiPercent(),
+                khaPercent: khaPercent(),
+                trungBinhPercent: trungBinhPercent(),
+                yeuPercent: yeuPercent(),
+            },
+        });
     },
 };
 

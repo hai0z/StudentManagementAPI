@@ -9,6 +9,7 @@ import {
 } from "typeorm";
 import Student from "./Student";
 import Semester from "./Semester";
+import Mark from "./Mark";
 
 @Entity({ name: "thongke" })
 export default class Statistical extends BaseEntity {
@@ -31,23 +32,4 @@ export default class Statistical extends BaseEntity {
     )
     @JoinColumn({ name: "hocKy_maHocKy" })
     maHocKi: Semester;
-
-    @AfterLoad()
-    async tinhDiemTrungBinh(maHs: string) {
-        const mark = await Student.findOne(maHs, {
-            relations: ["marks"],
-        });
-        const arrMark: any = [];
-        mark?.marks.forEach((item) => {
-            if (item.trungBinhMon != null) {
-                arrMark.push(item.trungBinhMon);
-            }
-        });
-        if (arrMark.length == mark?.marks.length) {
-            this.diemTrungBinh = +(
-                arrMark.reduce((a: any, b: any) => a + b) / arrMark.length
-            ).toFixed(1);
-        }
-        return this.diemTrungBinh;
-    }
 }

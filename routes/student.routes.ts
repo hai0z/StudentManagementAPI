@@ -13,7 +13,7 @@ route.post("/", studentController.createStudent);
 
 //put
 route.put("/:id", studentController.updateStudent);
-route.put("/change-password/student/:id", studentController.changePassword);
+route.put("/change-password/:id", studentController.changePassword);
 
 //delete
 route.delete("/:id", studentController.deleteStudent);

@@ -64,9 +64,11 @@ export default class Teacher extends BaseEntity {
     async addAvatar() {
         try {
             if (this.gioiTinh) {
-                this.img = "";
+                this.img =
+                    "https://cdn.discordapp.com/attachments/839856823866490970/966252005268000788/ggg-removebg-preview.png";
             } else {
-                this.img = " ";
+                this.img =
+                    " https://cdn.discordapp.com/attachments/839856823866490970/966252005498707968/unknown-removebg-preview_1.png";
             }
         } catch (err: any) {
             console.log(err.message);

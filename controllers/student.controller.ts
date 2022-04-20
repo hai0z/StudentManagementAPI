@@ -193,7 +193,10 @@ const studentController = {
                 if (student.password != oldPassword) {
                     return res
                         .status(400)
-                        .json({ message: "Mật khẩu cũ không đúng" });
+                        .json({
+                            message: "Mật khẩu cũ không đúng",
+                            success: false,
+                        });
                 } else {
                     await StudentAccount.update(student.id, {
                         password: newPassword,

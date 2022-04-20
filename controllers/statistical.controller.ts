@@ -1,14 +1,55 @@
 import { Request, Response } from "express";
 import Mark from "../entity/Mark";
+import Semester from "../entity/Semester";
 import Statistical from "../entity/Statistical";
 import Student from "../entity/Student";
 const statisticalController = {
     getAll: async (req: Request, res: Response): Promise<Response> => {
         try {
-            const statistical = await Statistical.find();
+            const statistical = await Statistical.find({
+                relations: ["maHocSinh", "maHocKi"],
+            });
+            statistical.forEach(async (element) => {
+                const mark = await Mark.find({
+                    where: {
+                        hocKi_maHocKi: element.maHocKi.maHocKi,
+                        student: {
+                            maHs: element.maHocSinh.maHs,
+                        },
+                    },
+                    relations: ["student"],
+                });
+                const student = await Student.find({
+                    where: {
+                        maHs: element.maHocSinh.maHs,
+                    },
+                });
+                const semester = await Semester.find({
+                    where: {
+                        maHocKi: element.maHocKi.maHocKi,
+                    },
+                });
+                const statistical = new Statistical();
+                const arrMark: any = [];
+                mark?.forEach((item) => {
+                    if (item.trungBinhMon != null) {
+                        arrMark.push(item.trungBinhMon);
+                    }
+                });
+                if (arrMark.length == mark?.length) {
+                    statistical.diemTrungBinh = +(
+                        arrMark.reduce((a: any, b: any) => a + b) /
+                        arrMark.length
+                    ).toFixed(1);
+                }
+                statistical.maThongke = element.maThongke;
+                statistical.maHocSinh = student[0];
+                statistical.maHocKi = semester[0];
+                await statistical.save();
+            });
             return res.json(statistical);
-        } catch (error) {
-            return res.json({ message: error });
+        } catch (error: any) {
+            return res.json({ message: error.message });
         }
     },
     getByStudentId: async (req: Request, res: Response): Promise<Response> => {
@@ -20,16 +61,6 @@ const statisticalController = {
                 },
                 relations: ["maHocKi", "maHocSinh"],
             });
-            if (statistical) {
-                statistical.forEach(async (element) => {
-                    const mark: any = await element?.tinhDiemTrungBinh(
-                        studentId
-                    );
-                    element!.diemTrungBinh = +mark.toFixed(1);
-                    await Statistical.update(element.maThongke, element!);
-                    await element?.save();
-                });
-            }
             return res.json(statistical);
         } catch (error) {
             return res.json({ message: error });
@@ -339,7 +370,7 @@ const statisticalController = {
                         return {
                             maMonHoc: +marks.monHoc_maMonHoc.maMonHoc,
                             tenMonHoc: marks.monHoc_maMonHoc.tenMonHoc,
-                            diemTongKet: tongDiem ?? 0,
+                            diemTongKet: tongDiem,
                         };
                     }
                     if (

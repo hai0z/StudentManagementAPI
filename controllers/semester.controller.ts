@@ -3,7 +3,11 @@ import Semester from "../entity/Semester";
 const semesterController = {
     getAllSemester: async (_: Request, res: Response): Promise<Response> => {
         try {
-            const semesters = await Semester.find();
+            const semesters = await Semester.find({
+                order: {
+                    namHoc: "DESC",
+                },
+            });
             return res.json(semesters);
         } catch (error) {
             return res.json({ message: error });

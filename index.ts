@@ -19,6 +19,7 @@ import swaggerDocument from "./swagger.json";
 import Mark from "./entity/Mark";
 import Student from "./entity/Student";
 import Teacher from "./entity/Teacher";
+import gradeRoutes from "./routes/grade.routes";
 
 dotenv.config();
 
@@ -45,14 +46,18 @@ app.use(
     })
 );
 app.get("/", async (req: Request, res: Response) => {
-    // const mark = await Mark.find();
+    // const mark = await Mark.find({
+    //     where: {
+    //         hocKi_maHocKi: "1(2022-2023)",
+    //     },
+    // });
     // mark.forEach(async (element) => {
     //     const mark = new Mark();
     //     mark.maDiem = element.maDiem;
-    //     mark.diemHeSo1 = Math.floor(Math.random() * 5 + 5);
+    //     mark.diemHeSo1 = Math.floor(Math.random() * 4 + 6);
     //     mark.diemHeSo1_2 = Math.floor(Math.random() * 5 + 5);
-    //     mark.diemHeSo2 = Math.floor(Math.random() * 5 + 5);
-    //     mark.diemHeSo2_2 = Math.floor(Math.random() * 5 + 5);
+    //     mark.diemHeSo2 = Math.floor(Math.random() * 2 + 7);
+    //     mark.diemHeSo2_2 = Math.floor(Math.random() * 6 + 4);
     //     mark.diemHeSo3 = Math.floor(Math.random() * 5 + 5);
     //     await mark.save();
     // });
@@ -69,11 +74,17 @@ app.get("/", async (req: Request, res: Response) => {
     //     }
     // });
     // const teacher = await Teacher.find();
-    // teacher.forEach(element=>{
-    //     if(element.gioiTinh){
-
+    // teacher.forEach((element) => {
+    //     if (element.gioiTinh) {
+    //         Teacher.update(element.maGiaoVien, {
+    //             img: `https://cdn.discordapp.com/attachments/839856823866490970/966252005268000788/ggg-removebg-preview.png`,
+    //         });
+    //     } else {
+    //         Teacher.update(element.maGiaoVien, {
+    //             img: `https://cdn.discordapp.com/attachments/839856823866490970/966252005498707968/unknown-removebg-preview_1.png`,
+    //         });
     //     }
-    // })
+    // });
     return res.json({ message: "hello" });
 });
 app.use("/api/student", studentRoutes);
@@ -85,3 +96,4 @@ app.use("/api/mark", markRoutes);
 app.use("/api/subject", subjectRoutes);
 app.use("/api/statistical", statisticalRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/grade", gradeRoutes);

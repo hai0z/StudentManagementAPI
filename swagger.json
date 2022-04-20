@@ -38,6 +38,14 @@
         {
             "name": "login",
             "description": "Login"
+        },
+        {
+            "name": "admin",
+            "description": "Admin"
+        },
+        {
+            "name": "grade",
+            "description": "Grade"
         }
     ],
     "definitions": {
@@ -49,8 +57,10 @@
         "mark": {},
         "login": {},
         "admin": {},
+        "statistical": {},
         "studentAccount": {},
-        "teacherAccount": {}
+        "teacherAccount": {},
+        "grade": {}
     },
     "paths": {
         "/student": {
@@ -132,6 +142,50 @@
                 ],
                 "responses": {
                     "201": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/student"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/student/change-password/{id}": {
+            "put": {
+                "tags": ["student"],
+                "summary": "Change password of a student",
+                "description": "Change password of a student",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the student",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "oldPassword",
+                        "in": "body",
+                        "description": "Password of the student",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "newPassword",
+                        "in": "body",
+                        "description": "New password of the student",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
                         "description": "Success",
                         "schema": {
                             "$ref": "#/definitions/student"
@@ -1510,6 +1564,27 @@
                         "description": "Success",
                         "schema": {
                             "$ref": "#/definitions/teacherAccount"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/grade": {
+            "get": {
+                "tags": ["grade"],
+                "summary": "Lấy tất cả các khối",
+                "description": "Lấy tất cả các khối",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/grade"
+                            }
                         }
                     },
                     "400": {

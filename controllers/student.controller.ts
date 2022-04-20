@@ -4,6 +4,7 @@ import Mark from "../entity/Mark";
 import Subject from "../entity/Subject";
 import Semester from "../entity/Semester";
 import Statistical from "../entity/Statistical";
+import StudentAccount from "../entity/StudentAccount";
 const studentController = {
     getAllStudent: async (_: Request, res: Response) => {
         try {
@@ -172,6 +173,33 @@ const studentController = {
             if (student) {
                 await Student.delete(id);
                 return res.status(200).json({ success: true });
+            }
+            return res.status(404).json({ message: "Không tìm thấy học sinh" });
+        } catch (error) {
+            return res.json({ message: error });
+        }
+    },
+    changePassword: async (req: Request, res: Response) => {
+        const { id } = req.params;
+        const { oldPassword, newPassword } = req.body;
+        try {
+            const student = await StudentAccount.findOne({
+                where: {
+                    maHocSinh: id,
+                },
+            });
+
+            if (student) {
+                if (student.password != oldPassword) {
+                    return res
+                        .status(400)
+                        .json({ message: "Mật khẩu cũ không đúng" });
+                } else {
+                    await StudentAccount.update(student.id, {
+                        password: newPassword,
+                    });
+                    return res.json({ success: true });
+                }
             }
             return res.status(404).json({ message: "Không tìm thấy học sinh" });
         } catch (error) {

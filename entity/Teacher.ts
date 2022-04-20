@@ -7,6 +7,7 @@ import {
     OneToMany,
     BeforeInsert,
     JoinColumn,
+    AfterInsert,
 } from "typeorm";
 
 import Class from "./Class";
@@ -26,6 +27,8 @@ export default class Teacher extends BaseEntity {
     @Column({ type: "date" })
     ngaySinh: Date;
 
+    @Column({ type: "varchar", length: 500 })
+    img: string;
     @Column({ type: "varchar", length: 150 })
     diaChi: string;
 
@@ -55,6 +58,18 @@ export default class Teacher extends BaseEntity {
             this.teacherAccount = teacherAccount;
         } catch (error: any) {
             console.log(error.message);
+        }
+    }
+    @AfterInsert()
+    async addAvatar() {
+        try {
+            if (this.gioiTinh) {
+                this.img = "";
+            } else {
+                this.img = " ";
+            }
+        } catch (err: any) {
+            console.log(err.message);
         }
     }
 }

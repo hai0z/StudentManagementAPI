@@ -47,7 +47,10 @@
         "subject": {},
         "semester": {},
         "mark": {},
-        "login": {}
+        "login": {},
+        "admin": {},
+        "studentAccount": {},
+        "teacherAccount": {}
     },
     "paths": {
         "/student": {
@@ -1389,6 +1392,124 @@
                         "description": "Success",
                         "schema": {
                             "$ref": "#/definitions/mark"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/admin/studentAccount": {
+            "get": {
+                "tags": ["admin"],
+                "summary": "Lấy tất cả tài khoản học sinh",
+                "description": "Lấy tất cả tài khoản học sinh",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/studentAccount"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/admin/studentAccount/{id}": {
+            "put": {
+                "tags": ["admin"],
+                "summary": "Cập nhật tài khoản học sinh",
+                "description": "Cập nhật tài khoản học sinh",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id of the studentAccount",
+                        "required": true,
+                        "type": "string"
+                    },
+
+                    {
+                        "name": "password",
+                        "in": "body",
+                        "description": "mat khau of the studentAccount",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "1111"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/studentAccount"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/admin/teacherAccount": {
+            "get": {
+                "tags": ["admin"],
+                "summary": "Lấy tất cả tài khoản giáo viên",
+                "description": "Lấy tất cả tài khoản giáo viên",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/teacherAccount"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/admin/teacherAccount/{id}": {
+            "put": {
+                "tags": ["admin"],
+                "summary": "Cập nhật tài khoản giáo viên",
+                "description": "Cập nhật tài khoản giáo viên",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id of the teacherAccount",
+                        "required": true,
+                        "type": "string"
+                    },
+
+                    {
+                        "name": "password",
+                        "in": "body",
+                        "description": "mat khau of the teacherAccount",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "1111"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/teacherAccount"
                         }
                     },
                     "400": {

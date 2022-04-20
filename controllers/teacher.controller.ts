@@ -78,7 +78,9 @@ const teacherController = {
             class_,
         } = req.body;
         try {
-            const teacher = await Teacher.findOne(teacherId);
+            const teacher = await Teacher.findOne(teacherId,{
+                relations: ["class"],
+            });
             if (teacher) {
                 await Teacher.update(teacherId, {
                     maGiaoVien: maGiaoVien ?? teacher.maGiaoVien,

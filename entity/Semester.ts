@@ -26,12 +26,13 @@ export default class Semester extends BaseEntity {
     @OneToMany(
         () => Statistical,
         (statistical: Statistical) => statistical.maHocKi,
-        { onDelete: "CASCADE" }
+        { onDelete: "CASCADE", onUpdate: "CASCADE" }
     )
     thongKe_maThongke: Statistical[];
 
     @OneToMany(() => Mark, (mark) => mark.hocKi_maHocKi, {
         onDelete: "CASCADE",
+        onUpdate: "CASCADE",
     })
     mark: Mark[];
 

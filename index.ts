@@ -50,10 +50,17 @@ app.get("/", async (req: Request, res: Response) => {
     //     where: {
     //         hocKi_maHocKi: "1(2022-2023)",
     //     },
+    //     relations: ["monHoc_maMonHoc"],
     // });
     // mark.forEach(async (element) => {
     //     const mark = new Mark();
     //     mark.maDiem = element.maDiem;
+    //     if (
+    //         element.monHoc_maMonHoc.maMonHoc == "11" ||
+    //         element.monHoc_maMonHoc.maMonHoc == "12"
+    //     ) {
+    //         mark.diemHeSo2_3 = Math.floor(Math.random() * 2 + 7);
+    //     }
     //     mark.diemHeSo1 = Math.floor(Math.random() * 4 + 6);
     //     mark.diemHeSo1_2 = Math.floor(Math.random() * 5 + 5);
     //     mark.diemHeSo2 = Math.floor(Math.random() * 2 + 7);

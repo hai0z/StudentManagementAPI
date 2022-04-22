@@ -31,9 +31,17 @@ const teacherController = {
                 },
                 relations: ["maGiaoVien", "maLop", "maMonHoc", "maHocKy"],
             });
-            return res.json(teaching);
+            return res.status(200).json(
+                teaching.map((x: any) => ({
+                    maLop: x.maLop.maLop,
+                    tenLop: x.maLop.tenLop,
+                    tenMonHoc: x.maMonHoc.tenMonHoc,
+                    maMonHoc: x.maMonHoc.maMonHoc,
+                    maHocKi: x.maHocKy.maHocKi,
+                }))
+            );
         } catch (error: any) {
-            return res.json({ message: error.message });
+            return res.status(500).json({ message: error.message });
         }
     },
 
@@ -78,7 +86,7 @@ const teacherController = {
             class_,
         } = req.body;
         try {
-            const teacher = await Teacher.findOne(teacherId,{
+            const teacher = await Teacher.findOne(teacherId, {
                 relations: ["class"],
             });
             if (teacher) {

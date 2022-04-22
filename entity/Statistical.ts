@@ -28,7 +28,7 @@ export default class Statistical extends BaseEntity {
     @ManyToOne(
         () => Semester,
         (semester: Semester) => semester.thongKe_maThongke,
-        { onDelete: "CASCADE" }
+        { onDelete: "CASCADE", onUpdate: "CASCADE" }
     )
     @JoinColumn({ name: "hocKy_maHocKy" })
     maHocKi: Semester;

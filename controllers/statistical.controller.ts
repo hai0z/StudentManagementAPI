@@ -73,13 +73,18 @@ const statisticalController = {
                 lop_maLop: req.params.classId,
             },
         });
-
+        if (!student) {
+            return res.status(500).json({ message: "Lỗi" });
+        }
         const allMarks = await Mark.find({
             relations: ["monHoc_maMonHoc", "hocKi_maHocKi"],
             where: {
                 hocKi_maHocKi: req.params.semesterId,
             },
         });
+        if (!allMarks) {
+            return res.status(500).json({ message: "Lỗi" });
+        }
         const studentMark = student.map((student) => {
             let mark = allMarks.filter((mark) =>
                 student.marks.map((mark) => mark.maDiem).includes(mark.maDiem)
@@ -101,24 +106,24 @@ const statisticalController = {
                 const Kha = mark.filter((x) => x.trungBinhMon >= 5);
                 const TrungBinh = mark.filter((x) => x.trungBinhMon >= 3.5);
                 if (
-                    (mark[10].trungBinhMon >= 8 ||
-                        mark[11].trungBinhMon >= 8) &&
+                    (mark[10]?.trungBinhMon >= 8 ||
+                        mark[11]?.trungBinhMon >= 8) &&
                     tongDiem >= 8 &&
                     Gioi.length == mark.length
                 ) {
                     return "Giỏi";
                 }
                 if (
-                    (mark[10].trungBinhMon >= 6.5 ||
-                        mark[11].trungBinhMon >= 6.5) &&
+                    (mark[10]?.trungBinhMon >= 6.5 ||
+                        mark[11]?.trungBinhMon >= 6.5) &&
                     tongDiem >= 6.5 &&
                     Kha.length == mark.length
                 ) {
                     return "Khá";
                 }
                 if (
-                    (mark[10].trungBinhMon >= 5 ||
-                        mark[11].trungBinhMon >= 5) &&
+                    (mark[10]?.trungBinhMon >= 5 ||
+                        mark[11]?.trungBinhMon >= 5) &&
                     tongDiem >= 5 &&
                     TrungBinh.length == mark.length
                 ) {
@@ -128,7 +133,7 @@ const statisticalController = {
             };
             const tk = (
                 mark.reduce((acc, mark) => {
-                    return acc + mark.trungBinhMon;
+                    return acc + mark?.trungBinhMon;
                 }, 0) / mark.length
             ).toFixed(1);
             return {
@@ -190,7 +195,7 @@ const statisticalController = {
                 lop_maLop: req.params.classId,
             },
         });
-
+        if (!student) return res.status(500).json({ message: "Lỗi" });
         const allMarks = await Mark.find({
             relations: ["monHoc_maMonHoc", "hocKi_maHocKi"],
             where: {
@@ -199,6 +204,7 @@ const statisticalController = {
                 },
             },
         });
+        if (!allMarks) return res.status(500).json({ message: "Lỗi" });
         const studentMark = student.map((student) => {
             let mark = allMarks.filter((mark) =>
                 student.marks.map((mark) => mark.maDiem).includes(mark.maDiem)
@@ -412,22 +418,24 @@ const statisticalController = {
                 const Kha = diem.filter((x) => x.diemTongKet >= 5);
                 const TrungBinh = diem.filter((x) => x.diemTongKet >= 3.5);
                 if (
-                    (diem[10].diemTongKet >= 8 || diem[11].diemTongKet >= 8) &&
+                    (diem[10]?.diemTongKet >= 8 ||
+                        diem[11]?.diemTongKet >= 8) &&
                     +student.tongKet.ALL >= 8 &&
                     Gioi.length == diem.length
                 ) {
                     return "Giỏi";
                 }
                 if (
-                    (diem[10].diemTongKet >= 6.5 ||
-                        diem[11].diemTongKet >= 6.5) &&
+                    (diem[10]?.diemTongKet >= 6.5 ||
+                        diem[11]?.diemTongKet >= 6.5) &&
                     +student.tongKet.ALL >= 6.5 &&
                     Kha.length == diem.length
                 ) {
                     return "Khá";
                 }
                 if (
-                    (diem[10]!.diemTongKet >= 5 || diem[11].diemTongKet >= 5) &&
+                    (diem[10]?.diemTongKet >= 5 ||
+                        diem[11]?.diemTongKet >= 5) &&
                     +student.tongKet.ALL >= 5 &&
                     TrungBinh.length == diem.length
                 ) {

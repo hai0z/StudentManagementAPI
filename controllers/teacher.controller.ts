@@ -14,9 +14,7 @@ const teacherController = {
     getTeacherById: async (req: Request, res: Response): Promise<Response> => {
         const { teacherId } = req.params;
         try {
-            const teacher = await Teacher.findOne(teacherId, {
-                relations: ["class"],
-            });
+            const teacher = await Teacher.findOne(teacherId);
             return res.json(teacher);
         } catch (error) {
             return res.json({ message: error });
@@ -31,15 +29,15 @@ const teacherController = {
                 },
                 relations: ["maGiaoVien", "maLop", "maMonHoc", "maHocKy"],
             });
-            return res.status(200).json(
-                teaching.map((x: any) => ({
-                    maLop: x.maLop.maLop,
-                    tenLop: x.maLop.tenLop,
-                    tenMonHoc: x.maMonHoc.tenMonHoc,
-                    maMonHoc: x.maMonHoc.maMonHoc,
-                    maHocKi: x.maHocKy.maHocKi,
-                }))
-            );
+            const t = teaching.map((x: any) => ({
+                maLop: x.maLop.maLop,
+                tenLop: x.maLop.tenLop,
+                tenMonHoc: x.maMonHoc.tenMonHoc,
+                maMonHoc: x.maMonHoc.maMonHoc,
+                maHocKi: x.maHocKy.maHocKi,
+            }));
+
+            return res.status(200).json(t);
         } catch (error: any) {
             return res.status(500).json({ message: error.message });
         }
@@ -54,7 +52,6 @@ const teacherController = {
             diaChi,
             soDienThoai,
             email,
-            class_,
         } = req.body;
         try {
             const teacher = Teacher.create({
@@ -65,7 +62,6 @@ const teacherController = {
                 diaChi,
                 soDienThoai,
                 email,
-                class: class_,
             });
             await teacher.save();
             return res.json(teacher);
@@ -83,12 +79,9 @@ const teacherController = {
             diaChi,
             soDienThoai,
             email,
-            class_,
         } = req.body;
         try {
-            const teacher = await Teacher.findOne(teacherId, {
-                relations: ["class"],
-            });
+            const teacher = await Teacher.findOne(teacherId);
             if (teacher) {
                 await Teacher.update(teacherId, {
                     maGiaoVien: maGiaoVien ?? teacher.maGiaoVien,
@@ -98,13 +91,14 @@ const teacherController = {
                     diaChi: diaChi ?? teacher.diaChi,
                     soDienThoai: soDienThoai ?? teacher.soDienThoai,
                     email: email ?? teacher.email,
-                    class: class_ ?? teacher.class,
                 });
                 return res.json({ message: "Update success", teacher });
             }
-            return res.json({ message: "Không tìm thấy giáo viên" });
+            return res
+                .status(404)
+                .json({ message: "Không tìm thấy giáo viên" });
         } catch (error: any) {
-            return res.json({ message: error.message });
+            return res.status(400).json({ message: error.message });
         }
     },
     createTeaching: async (req: Request, res: Response): Promise<Response> => {
@@ -118,8 +112,8 @@ const teacherController = {
             });
             await teaching.save();
             return res.json(teaching);
-        } catch (error) {
-            return res.json({ message: error });
+        } catch (error: any) {
+            return res.json({ message: error.message });
         }
     },
     deleteTeacher: async (req: Request, res: Response): Promise<Response> => {
@@ -130,9 +124,11 @@ const teacherController = {
                 await Teacher.delete(teacherId);
                 return res.json({ message: "Delete success" });
             }
-            return res.json({ message: "Không tìm thấy giáo viên" });
-        } catch (error) {
-            return res.json({ message: error });
+            return res
+                .status(404)
+                .json({ message: "Không tìm thấy giáo viên" });
+        } catch (error: any) {
+            return res.json({ message: error.message });
         }
     },
 };

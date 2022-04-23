@@ -4,7 +4,7 @@ import Semester from "../entity/Semester";
 import Statistical from "../entity/Statistical";
 import Student from "../entity/Student";
 const statisticalController = {
-    getAll: async (req: Request, res: Response): Promise<Response> => {
+    getAll: async (_: Request, res: Response): Promise<Response> => {
         try {
             const statistical = await Statistical.find({
                 relations: ["maHocSinh", "maHocKi"],

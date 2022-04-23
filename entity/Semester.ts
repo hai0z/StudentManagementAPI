@@ -5,7 +5,6 @@ import {
     OneToMany,
     BaseEntity,
     AfterInsert,
-    AfterUpdate,
 } from "typeorm";
 import Subject from "./Subject";
 import Statistical from "./Statistical";
@@ -26,7 +25,10 @@ export default class Semester extends BaseEntity {
     @OneToMany(
         () => Statistical,
         (statistical: Statistical) => statistical.maHocKi,
-        { onDelete: "CASCADE", onUpdate: "CASCADE" }
+        {
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
+        }
     )
     thongKe_maThongke: Statistical[];
 

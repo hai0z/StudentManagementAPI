@@ -46,6 +46,7 @@ app.use(
     })
 );
 app.get("/", async (req: Request, res: Response) => {
+    //todo: insert default data
     // const mark = await Mark.find({
     //     where: {
     //         hocKi_maHocKi: "1(2022-2023)",

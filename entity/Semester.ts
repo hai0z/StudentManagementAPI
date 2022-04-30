@@ -11,6 +11,7 @@ import Statistical from "./Statistical";
 import Mark from "./Mark";
 import Student from "./Student";
 import Teaching from "./Teaching";
+
 @Entity({ name: "hocki" })
 export default class Semester extends BaseEntity {
     @PrimaryColumn({ type: "varchar", length: 20 })

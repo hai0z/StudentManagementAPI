@@ -29,6 +29,7 @@ export default class Teacher extends BaseEntity {
 
     @Column({ type: "varchar", length: 500 })
     img: string;
+
     @Column({ type: "varchar", length: 150 })
     diaChi: string;
 
@@ -60,6 +61,7 @@ export default class Teacher extends BaseEntity {
             console.log(error.message);
         }
     }
+
     @AfterInsert()
     async addAvatar() {
         try {

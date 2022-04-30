@@ -189,7 +189,7 @@ const statisticalController = {
         });
     },
     getByClassIdAndNamHoc: async (req: Request, res: Response) => {
-        const student = await Student.find({
+        const student: Student[] = await Student.find({
             relations: ["marks"],
             where: {
                 lop_maLop: req.params.classId,

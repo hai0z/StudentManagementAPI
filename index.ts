@@ -95,6 +95,7 @@ app.get("/", async (req: Request, res: Response) => {
     // });
     return res.json({ message: "hello" });
 });
+
 app.use("/api/student", studentRoutes);
 app.use("/api/class", classRoutes);
 app.use("/api/teacher", teacherRoutes);

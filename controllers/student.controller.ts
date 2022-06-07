@@ -104,7 +104,9 @@ const studentController = {
             });
             const check = await Student.findOne(maHs);
             if (check) {
-                return res.json({ message: "Student already exists" });
+                return res
+                    .status(400)
+                    .json({ message: "Student already exists" });
             }
             await student.save();
             const relations = await Student.findOne(maHs);
@@ -172,7 +174,10 @@ const studentController = {
             const student = await Student.findOne(id);
             if (student) {
                 await Student.delete(id);
-                return res.status(200).json({ success: true });
+                return res.status(200).json({
+                    message: "Xóa thành công",
+                    maHs: student.maHs,
+                });
             }
             return res.status(404).json({ message: "Không tìm thấy học sinh" });
         } catch (error) {
@@ -191,12 +196,10 @@ const studentController = {
 
             if (student) {
                 if (student.password != oldPassword) {
-                    return res
-                        .status(400)
-                        .json({
-                            message: "Mật khẩu cũ không đúng",
-                            success: false,
-                        });
+                    return res.status(400).json({
+                        message: "Mật khẩu cũ không đúng",
+                        success: false,
+                    });
                 } else {
                     await StudentAccount.update(student.id, {
                         password: newPassword,
